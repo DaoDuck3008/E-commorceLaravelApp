@@ -285,17 +285,23 @@
             <h5 class="mt-1">MUA NGAY</h5>
             <p>Giao nhanh 2 giờ hoặc nhận tại cửa hàng</p>
           </div>
-          <div
-            class="col-3 btn d-flex align-items-center justify-content-center"
-            style="
-              color: #e03c4e;
-              font-weight: 600;
-              border: 2px solid #e03c4e;
-              border-radius: 10px;
-            "
-          >
-            <i class="fa-solid fa-cart-plus me-2"></i>
-            Thêm vào giỏ
+          <div class="col-3 btn ">
+            <form  method='post' action="{{ auth() ? route('cart.addItem',['productID'=> $product->ProductID,'userID' => auth()->user()->UserID]) : route('login') }}">
+              @csrf
+              <button
+                class=" d-flex align-items-center justify-content-center"
+                style="
+                  color: #e03c4e;
+                  font-weight: 600;
+                  border: 2px solid #e03c4e;
+                  border-radius: 10px;
+                "
+                type="submit"
+              >
+                <i class="fa-solid fa-cart-plus me-2"></i>
+                Thêm vào giỏ hàng
+              </button>
+            </form>
           </div>
         </div>
 

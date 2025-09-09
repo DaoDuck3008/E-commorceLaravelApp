@@ -181,3 +181,16 @@ php artisan view:clear
 ## 🎉 Chúc Bạn Lập Trình Vui Vẻ!
 
 > **Made with ❤️ using Laravel Framework**
+
+
+
+## CRUD
+Create
+Read
+Update
+Delete
+
+thêm sửa xóa
+
+
+get-xem post-create / put-update / delete

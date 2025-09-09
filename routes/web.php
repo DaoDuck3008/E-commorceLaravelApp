@@ -8,7 +8,6 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Models\Product;
 
 # Public routes (Customer có thể vào)
 Route::get('/', [HomeController::class, 'index']);
@@ -33,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
     // Route giỏ hàng
     Route::get('/cart',[CartController::class,'index'])->name('cart.index');
+    Route::post('/cart',[CartController::class,'addItem'])->name('cart.addItem');
 });
 
 
