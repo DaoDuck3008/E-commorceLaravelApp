@@ -59,8 +59,48 @@
 
 
 <script>
-    // gọi categories lên
     document.addEventListener("DOMContentLoaded", function() {
+        const megaMenuContainer = document.querySelector("#megaMenuContainer");
+        const brandContainer = document.querySelector("#brandContainer");
+        const searchUrl = "{{ route('products.searchCustomer') }}";
+        const sidebarContainer = document.querySelector(".sidebar-container");
+        
+        // Sử dụng event delegation
+        sidebarContainer.addEventListener("mouseenter", function(e) {
+            const sidebarItem = e.target.closest('.sidebar-items');
+            if (!sidebarItem) return;
+            
+            let categoryId = sidebarItem.getAttribute("data-id");
+            
+            // Nếu đang mở cùng category thì ẩn đi
+            if (brandContainer.dataset.openId === categoryId && megaMenuContainer.style.display === "block") {
+                megaMenuContainer.style.display = "none";
+                return;
+            }
+            
+            fetch(`/brands-by-category/${categoryId}`)
+                .then(res => res.json())
+                .then(data => {
+                    let html = "<ul class='list-unstyled mb-0 d-flex flex-column text-start'>";
+                    data.forEach(brand => {
+                        html += `<a class="py-1 btn text-start" href="{{ route('products.searchCustomer')}}?brand=${brand.BrandID}&category=${categoryId}">${brand.BrandName}</a>`;
+                    });
+                    html += "</ul>";
+                    
+                    brandContainer.innerHTML = html;
+                    megaMenuContainer.style.display = "block";
+                    brandContainer.dataset.openId = categoryId;
+                    
+                    // Gắn categoryId vào các link price & sort
+                    document.querySelectorAll(".price-link, .sort-link").forEach(link => {
+                        let query = link.dataset.query;
+                        link.href = `${searchUrl}?${query}&category=${categoryId}`;
+                    });
+                })
+                .catch(err => console.error(err));
+        }, true); // Use capture phase
+        
+        // Gọi categories
         fetch('/find-all-categories')
             .then(res => res.json())
             .then(categories => {
@@ -82,53 +122,10 @@
                 });
             })
             .catch(err => console.error("Lỗi load categories:", err));
-    });
-
-  const megaMenuContainer = document.querySelector("#megaMenuContainer");
-  const brandContainer = document.querySelector("#brandContainer");
-  const searchUrl = "{{ route('products.searchCustomer') }}";
-
-  document.querySelectorAll(".sidebar-items").forEach(item => {
-      item.addEventListener("mouseenter", function () {
-          let categoryId = this.getAttribute("data-id");
-
-          // Nếu đang mở cùng category thì ẩn đi
-          if (brandContainer.dataset.openId === categoryId && megaMenuContainer.style.display === "block") {
-              megaMenuContainer.style.display = "none";
-              return;
-          }
-
-          fetch(`/brands-by-category/${categoryId}`)
-              .then(res => res.json())
-              .then(data => {
-                  let html = "<ul class='list-unstyled mb-0 d-flex flex-column text-start'>";
-                  data.forEach(brand => {
-                      html += `<a class="py-1 btn text-start" href="{{ route('products.searchCustomer')}}?brand=${brand.BrandID}&category=${categoryId}">${brand.BrandName}</a>`;
-                  });
-                  html += "</ul>";
-
-                  brandContainer.innerHTML = html;
-                  megaMenuContainer.style.display = "block";
-                  brandContainer.dataset.openId = categoryId;
-
-                  // // căn theo vị trí item bấm
-                  // let rect = this.getBoundingClientRect();
-                  // let sidebarRect = this.closest(".sidebar-container").getBoundingClientRect();
-                  // brandContainer.style.top = (rect.top - sidebarRect.top) + "px";
-
-                // Gắn categoryId vào các link price & sort
-                document.querySelectorAll(".price-link, .sort-link").forEach(link => {
-                        let query = link.dataset.query;
-                        link.href = `${searchUrl}?${query}&category=${categoryId}`;
-                });
-              })
-              .catch(err => console.error(err));
-      });
-  });
-
-  // Ẩn khi click ra ngoài
-  // Ẩn khi rời khỏi sidebar
-    document.querySelector(".sidebar-container").addEventListener("mouseleave", function () {
-        document.querySelector("#megaMenuContainer").style.display = "none";
+        
+        // Ẩn khi rời khỏi sidebar
+        sidebarContainer.addEventListener("mouseleave", function () {
+            megaMenuContainer.style.display = "none";
+        });
     });
 </script>

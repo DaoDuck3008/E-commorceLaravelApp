@@ -72,7 +72,7 @@
             </thead>
             <tbody id="version-table">
             @foreach ($product->productVersions as $index => $version )
-                <tr id="verion-row-{{ $index }}">
+                <tr id="version-row-{{ $index }}">
                     <td>
                     <input
                         type="text"
@@ -532,7 +532,6 @@
         window.location.href = "/admin";
       }
     }
-
 
     //Hàm gọi giá trị Brand theo Category
     document.getElementById('category').addEventListener('change', function() {

@@ -33,9 +33,6 @@
                                 <label for="category" class="form-label">Danh mục</label>
                                 <select name="category" id="category" class="form-select">
                                 <option value="">-- Chọn danh mục --</option>
-                                @foreach ($categories as $category )
-                                    <option value="{{ $category->CategoryID }}" {{ $category->CategoryID == $products[0]->category->CategoryID ? "selected" : ""}}>{{ $category->CategoryName }}</option>
-                                @endforeach
                                 </select>
                             </div>
             
@@ -153,7 +150,33 @@
         </div>
     </div>
     
+
+
     <script>
+        //Lấy giá trị brand và category được truyền trên route
+        const categoryIDInRoute = "{{ request('category') }}";
+        const brandIDInRoute = "{{ request('brand') }}";
+
+        //Hàm gọi category 
+        let categorySelect  = document.getElementById('category');
+        fetch(`/find-all-categories`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(category => {
+                    let option = document.createElement('option');
+                    option.value = category.CategoryID;
+                    option.textContent = category.CategoryName;
+                    //Kiểm tra nếu category được chọn trước đó
+                    if(categoryIDInRoute == category.CategoryID){
+                        option.selected = true;
+                    } 
+
+                    categorySelect.appendChild(option);
+                })
+            })
+            .catch(err => console.error(err));
+
+
         //Hàm gọi giá trị Brand theo Category
         document.getElementById('category').addEventListener('change', function() {
             let categoryId = this.value;
@@ -171,7 +194,7 @@
                             option.value = brand.BrandID;
                             option.textContent = brand.BrandName;
                             // Kiểm tra nếu brand được chọn trước đó
-                            if('{{ old("brand") }}' == brand.BrandID) {
+                            if(brandIDInRoute == brand.BrandID) {
                                 option.selected = true;
                             }
                             brandSelect.appendChild(option);

@@ -135,6 +135,7 @@ class ProductController extends Controller
     }
 
     public function update(StoreProductRequest $request, $id){
+        // dd($request);
         //Validate ở trong file StoreProductRequest
         $request->validated();
 
@@ -243,6 +244,7 @@ class ProductController extends Controller
         //Cập nhật màu sắc sản phẩm nếu có
         if ($request->has('color')) {
             foreach ($request->color as $color) {
+                //Kiểm tra xem có color nào được chỉnh sửa không
                 if (!empty($color['name'])) {
                     $imgUrl = null;
         
@@ -274,16 +276,26 @@ class ProductController extends Controller
                     );
                 }
             }
-        }else{
-            //Nếu không có color mới và color cũ mất 
-            $colors = Productcolor::where('ProductID',$id)->get();
-            foreach($colors as $color){
+        }
+
+        //Kiểm tra xem có color nào bị xóa đi không
+        $colors = Productcolor::where('ProductID',$id)->get();
+        $requestColors = $request->input('color', []); // Lấy array colors từ request
+        $colorNames = [];
+
+        foreach ($requestColors as $colorId => $colorData) {
+            $colorNames[] = $colorData['name'];
+        }
+
+        foreach($colors as $color){
+            if(!in_array($color->Color, $colorNames)){
                 $oldPath = str_replace('/storage/','',$color->ImgURL);
                 Storage::disk('public')->delete($oldPath);
 
                 $color->delete();
             }
         }
+
 
         DB::commit();
         

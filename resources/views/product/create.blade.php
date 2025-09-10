@@ -478,6 +478,7 @@
         function addVersionRow() {
             let table = document.getElementById("version-table");
             let row = document.createElement("tr");
+            row.id = `version-row-${versionIndex}`;
             row.innerHTML = `
               <td><input type="text" class="form-control" name="version[${versionIndex}][name]" placeholder="Tên phiên bản"></td>
               <td><input type="number" class="form-control" name="version[${versionIndex}][price]" placeholder="Giá phiên bản"></td>
@@ -505,6 +506,7 @@
         function addColorRow() {
             let table = document.getElementById("color-table");
             let row = document.createElement("tr");
+            row.id = `color-row-${colorIndex}`;
             row.innerHTML = `
               <td><input type="text" class="form-control" name="color[${colorIndex}][name]" placeholder="Tên màu"></td>
               <td class="d-flex">
@@ -542,6 +544,57 @@
                 };
                 reader.readAsDataURL(input.files[0]);
             }
+        }
+
+
+        // === UTILITY FUNCTIONS ===
+        // Animate khi xóa hàng
+        function animateRowRemoval(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) {
+                row.classList.add('row-removing');
+                setTimeout(() => {
+                    row.remove();
+                }, 300);
+            }
+        }
+
+
+        // Validate form trước khi submit
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('input[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            return isValid;
+        }
+
+        // Thông báo khi thêm/xóa thành công
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
         }
 
 
