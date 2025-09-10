@@ -41,7 +41,7 @@ class Product extends Model
     /**
      * @var array
      */
-    protected $fillable = ['CategoryID', 'ProductName', 'Description', 'Price', 'StockQuantity', 'BrandID', 'WarrantyPeriod', 'ImageURL', 'CreatedAt', 'UpdatedAt','VideoLink'];
+    protected $fillable = ['CategoryID', 'ProductName', 'Description', 'Price', 'StockQuantity', 'BrandID', 'WarrantyPeriod', 'ImageURL', 'CreatedAt', 'UpdatedAt','VideoLink','AvgRate','CommentCount'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -119,4 +119,36 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\Review', 'ProductID', 'ProductID');
     }
+
+
+     // Quan hệ với Comment
+     public function comments()
+     {
+         return $this->hasMany('App\Models\Comment', 'ProductID', 'ProductID');
+     }
+     
+     // Quan hệ với User thông qua comments
+     public function commentingUsers()
+     {
+         return $this->hasManyThrough(
+             'App\Models\User', 
+             'App\Models\Comment',
+             'ProductID', // Foreign key trên comments table
+             'UserID', // Foreign key trên users table
+             'ProductID', // Local key trên products table
+             'UserID' // Local key trên comments table
+         );
+     }
+     
+     // Tính trung bình rating
+     public function averageRating()
+     {
+         return $this->comments()->avg('Rate');
+     }
+     
+     // Đếm số comment
+     public function commentCount()
+     {
+         return $this->comments()->count();
+     }
 }

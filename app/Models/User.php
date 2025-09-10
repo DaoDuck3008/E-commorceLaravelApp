@@ -69,4 +69,24 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Review', 'UserID', 'UserID');
     }
+
+
+    // Quan hệ với Comment
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment', 'UserID', 'UserID');
+    }
+    
+    // Quan hệ với Product thông qua comments
+    public function commentedProducts()
+    {
+        return $this->hasManyThrough(
+            'App\Models\Product', 
+            'App\Models\Comment',
+            'UserID', // Foreign key trên comments table
+            'ProductID', // Foreign key trên products table
+            'UserID', // Local key trên users table
+            'ProductID' // Local key trên comments table
+        );
+    }
 }
