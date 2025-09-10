@@ -22,6 +22,8 @@ class Review extends Model
      * @var string
      */
     protected $primaryKey = 'ReviewID';
+    
+    public $timestamps = true;
 
     /**
      * @var array
