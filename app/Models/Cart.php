@@ -20,10 +20,13 @@ class Cart extends Model
      */
     protected $primaryKey = 'CartID';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['UserID', 'CreatedAt'];
+    public $timestamps = true;
+    const CREATED_AT = 'CreatedAt';
+    const UPDATED_AT = 'UpdatedAt';
+
+
+    protected $fillable = ['CartID','UserID' ,'ProductID', 'VersionID', 'ColorID', 'Quantity'];
+    
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -39,5 +42,21 @@ class Cart extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'UserID', 'UserID');
+    }
+
+    public function getTotalQuantityAttribute()
+    {
+        return $this->cartitems()->sum('Quantity');
+    }
+
+    public function getTotalAmountAttribute()
+    {
+        $total = 0;
+        
+        foreach ($this->cartitems as $item) {
+            $total += $item->total;
+        }
+        
+        return $total;
     }
 }

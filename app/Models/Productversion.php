@@ -28,4 +28,9 @@ class Productversion extends Model
    {
        return $this->belongsTo('App\Models\Product', 'ProductID', 'ProductID');
    }
+
+   public function cartitems()
+    {
+        return $this->hasMany('App\Models\Cartitem','VersionID','VersionID');
+    }
 }

@@ -137,157 +137,165 @@
           </div>
         </button>
 
-        <!-- Loại -->
-        <div class="version mt-4">
-          <!-- Phiên bản -->
-          <h5><strong>Phiên bản</strong></h5>
-          <div role="group" aria-label="Chọn phiên bản">
-            @foreach ($product->productVersions as $index => $version)
-              <input
-              type="radio"
-              class="btn-check"
-              name="productVersion"
-              id="version-{{ $index }}"
-              data-price="{{ $version->Price }}"
-              autocomplete="off"
-              {{ $index == 0 ? "checked" : "" }}
-              />
-              <label class="btn px-4 py-3 mx-1" for="version-{{ $index }}">{{ $version->VersionName }}</label>
-            @endforeach
+
+        {{--  --}}
+        {{-- Form thêm vào giỏ hàng --}}
+        <form action="{{ route('cart.addItem') }}" method="post">
+        @csrf
+          {{-- truyền productID --}}
+          <input type="hidden" name="productID" value="{{ $product->ProductID }}"/>  
+
+          <!-- Loại -->
+          <div class="version mt-4">
+            <!-- Phiên bản -->
+            <h5><strong>Phiên bản</strong></h5>
+            <div role="group" aria-label="Chọn phiên bản">
+              @foreach ($product->productVersions as $index => $version)
+                <input
+                type="radio"
+                class="btn-check"
+                name="versionID"
+                id="version-{{ $index }}"
+                value="{{ $version->VersionID }}"
+                data-price="{{ $version->Price }}"
+                autocomplete="off"
+                {{ $index == 0 ? "checked" : "" }}
+                />
+                <label class="btn px-4 py-3 mx-1" for="version-{{ $index }}">{{ $version->VersionName }}</label>
+              @endforeach
+            </div>
+
+            <!-- Màu sắc -->
+            <h5 class="mt-2"><strong>Màu sắc</strong></h5>
+            <div role="group" aria-label="Chọn Màu sắc">
+              @foreach ($product->productColors as $index => $color )
+                <input
+                type="radio"
+                class="btn-check"
+                name="colorID"
+                id="color{{ $index }}"
+                value="{{ $color->ColorID }}"
+                autocomplete="off"
+                {{ $index == 0 ? "checked" : "" }}
+                />
+                <label class="btn mx-1 my-2" for="color{{ $index }}">
+                  <div class="d-flex">
+                    <img
+                      width="50"
+                      height="50"
+                      src="{{ $color->ImgURL }}"
+                    />
+                    <div>
+                      <strong>{{ $color->Color }}</strong>
+                    </div>
+                  </div>
+                </label>
+              @endforeach
+            </div>
           </div>
 
-          <!-- Màu sắc -->
-          <h5 class="mt-2"><strong>Màu sắc</strong></h5>
-          <div role="group" aria-label="Chọn Màu sắc">
-            @foreach ($product->productColors as $index => $color )
-              <input
-              type="radio"
-              class="btn-check"
-              name="color"
-              id="color{{ $index }}"
-              autocomplete="off"
-              {{ $index == 0 ? "checked" : "" }}
-              />
-              <label class="btn mx-1 my-2" for="color{{ $index }}">
-                <div class="d-flex">
-                  <img
-                    width="50"
-                    height="50"
-                    src="{{ $color->ImgURL }}"
-                  />
-                  <div>
-                    <strong>{{ $color->Color }}</strong>
+          <!-- Chi nhánh các cửa hàng -->
+          <div class="container mt-2">
+            <div class="pt-3 ps-2 bg-light border rounded row">
+              <!-- Xem chi nhánh của hàng -->
+              <div class="d-flex flex-wrap mb-2">
+                <div class="me-1">
+                  <strong>Xem chi nhánh có hàng</strong><br />
+                  Có <span class="text-primary">28</span> cửa hàng có sẵn sản
+                  phẩm
+                </div>
+
+                <!-- Dropdown -->
+                <div class="mx-1">
+                  <select class="form-select" style="width: auto">
+                    <option>Hà Nội</option>
+                    <option>Hồ Chí Minh</option>
+                  </select>
+                </div>
+                <div class="mx-1">
+                  <select class="form-select" style="width: auto">
+                    <option>Quận/Huyện</option>
+                    <option>Hai Bà Trưng</option>
+                    <option>Đống Đa</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Danh sách cửa hàng -->
+              <div
+                class="store-list d-flex flex-nowrap overflow-x-auto overflow-y-hidden gap-2 mb-3"
+              >
+                <div class="store-card">
+                  <div class="mb-2 fw-semibold">
+                    51 Đại Cồ Việt, Phường Lê Đại Hành, Quận Hai Bà Trưng
+                  </div>
+                  <div class="d-flex gap-2">
+                    <span class="phone-badge">
+                      <i
+                        class="fa-solid fa-phone me-1"
+                        style="color: #d70018"
+                      ></i>
+                      02471000051
+                    </span>
+                    <span class="map-badge">
+                      <i
+                        class="fa-solid fa-location-dot me-1"
+                        style="color: #d70018"
+                      ></i>
+                      Bản đồ
+                    </span>
                   </div>
                 </div>
-              </label>
-            @endforeach
-          </div>
-        </div>
 
-        <!-- Chi nhánh các cửa hàng -->
-        <div class="container mt-2">
-          <div class="pt-3 ps-2 bg-light border rounded row">
-            <!-- Xem chi nhánh của hàng -->
-            <div class="d-flex flex-wrap mb-2">
-              <div class="me-1">
-                <strong>Xem chi nhánh có hàng</strong><br />
-                Có <span class="text-primary">28</span> cửa hàng có sẵn sản
-                phẩm
-              </div>
-
-              <!-- Dropdown -->
-              <div class="mx-1">
-                <select class="form-select" style="width: auto">
-                  <option>Hà Nội</option>
-                  <option>Hồ Chí Minh</option>
-                </select>
-              </div>
-              <div class="mx-1">
-                <select class="form-select" style="width: auto">
-                  <option>Quận/Huyện</option>
-                  <option>Hai Bà Trưng</option>
-                  <option>Đống Đa</option>
-                </select>
+                <div class="store-card">
+                  <div class="mb-2 fw-semibold">
+                    282 Minh Khai, Q. Hai Bà Trưng, Hà Nội
+                  </div>
+                  <div class="d-flex gap-2">
+                    <span class="phone-badge">
+                      <i
+                        class="fa-solid fa-phone me-1"
+                        style="color: #d70018"
+                      ></i>
+                      02471010282
+                    </span>
+                    <span class="map-badge">
+                      <i
+                        class="fa-solid fa-location-dot me-1"
+                        style="color: #d70018"
+                      ></i>
+                      Bản đồ
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
 
-            <!-- Danh sách cửa hàng -->
+          <!-- Phương thức thanh toán -->
+          <div class="row mt-3 d-flex justify-content-center">
             <div
-              class="store-list d-flex flex-nowrap overflow-x-auto overflow-y-hidden gap-2 mb-3"
+              class="col-2 btn d-flex align-items-center"
+              style="
+                color: #3b82f6;
+                font-weight: 600;
+                border: 2px solid #3b82f6;
+                border-radius: 10px;
+              "
             >
-              <div class="store-card">
-                <div class="mb-2 fw-semibold">
-                  51 Đại Cồ Việt, Phường Lê Đại Hành, Quận Hai Bà Trưng
-                </div>
-                <div class="d-flex gap-2">
-                  <span class="phone-badge">
-                    <i
-                      class="fa-solid fa-phone me-1"
-                      style="color: #d70018"
-                    ></i>
-                    02471000051
-                  </span>
-                  <span class="map-badge">
-                    <i
-                      class="fa-solid fa-location-dot me-1"
-                      style="color: #d70018"
-                    ></i>
-                    Bản đồ
-                  </span>
-                </div>
-              </div>
-
-              <div class="store-card">
-                <div class="mb-2 fw-semibold">
-                  282 Minh Khai, Q. Hai Bà Trưng, Hà Nội
-                </div>
-                <div class="d-flex gap-2">
-                  <span class="phone-badge">
-                    <i
-                      class="fa-solid fa-phone me-1"
-                      style="color: #d70018"
-                    ></i>
-                    02471010282
-                  </span>
-                  <span class="map-badge">
-                    <i
-                      class="fa-solid fa-location-dot me-1"
-                      style="color: #d70018"
-                    ></i>
-                    Bản đồ
-                  </span>
-                </div>
-              </div>
+              Trả góp 0%
             </div>
-          </div>
-        </div>
-
-        <!-- Phương thức thanh toán -->
-        <div class="row mt-3 d-flex justify-content-center">
-          <div
-            class="col-2 btn d-flex align-items-center"
-            style="
-              color: #3b82f6;
-              font-weight: 600;
-              border: 2px solid #3b82f6;
-              border-radius: 10px;
-            "
-          >
-            Trả góp 0%
-          </div>
-          <div
-            class="col-6 d-flex flex-column align-items-center btn mx-2"
-            style="
-              color: white;
-              background: linear-gradient(to bottom, #ff4b4b, #d40000);
-            "
-          >
-            <h5 class="mt-1">MUA NGAY</h5>
-            <p>Giao nhanh 2 giờ hoặc nhận tại cửa hàng</p>
-          </div>
-          <div class="col-3 btn ">
-            <form  method='post' action="{{ auth() ? route('cart.addItem',['productID'=> $product->ProductID,'userID' => auth()->user()->UserID]) : route('login') }}">
-              @csrf
+            <div
+              class="col-6 d-flex flex-column align-items-center btn mx-2"
+              style="
+                color: white;
+                background: linear-gradient(to bottom, #ff4b4b, #d40000);
+              "
+            >
+              <h5 class="mt-1">MUA NGAY</h5>
+              <p>Giao nhanh 2 giờ hoặc nhận tại cửa hàng</p>
+            </div>
+            <div class="col-3 btn ">
               <button
                 class=" d-flex align-items-center justify-content-center"
                 style="
@@ -301,9 +309,12 @@
                 <i class="fa-solid fa-cart-plus me-2"></i>
                 Thêm vào giỏ hàng
               </button>
-            </form>
+            </div>
           </div>
-        </div>
+        </form>
+        
+
+        
 
         <!-- Video youtube -->
         <div class="container my-4">
