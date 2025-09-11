@@ -1,16 +1,37 @@
 <?php
-// 2025_01_01_000001_create_ecommerce_tables.php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        // Create users table
+        // Bảng categories
+        Schema::create('categories', function (Blueprint $table) {
+            $table->integer('CategoryID')->primary();
+            $table->string('CategoryName', 50);
+            $table->text('Description')->nullable();
+            $table->integer('Priority')->default(100);
+        });
+
+        // Bảng brands
+        Schema::create('brands', function (Blueprint $table) {
+            $table->unsignedInteger('BrandID')->autoIncrement();
+            $table->string('BrandName', 255);
+            $table->integer('CategoryID');
+            $table->string('Description', 255);
+            
+            $table->foreign('CategoryID')->references('CategoryID')->on('categories')->onDelete('cascade');
+        });
+
+        // Bảng users
         Schema::create('users', function (Blueprint $table) {
-            $table->id('UserID');
+            $table->integer('UserID')->autoIncrement();
             $table->string('FullName', 100);
             $table->string('Email', 100)->unique();
             $table->string('PasswordHash', 255);
@@ -19,109 +40,97 @@ return new class extends Migration
             $table->enum('Role', ['Customer', 'Admin', 'Staff'])->default('Customer');
             $table->timestamp('CreatedAt')->useCurrent();
             $table->timestamp('UpdatedAt')->useCurrent()->useCurrentOnUpdate();
-            $table->rememberToken();
+            $table->string('remember_token', 255)->default('');
         });
 
-        // Create categories table
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id('CategoryID');
-            $table->string('CategoryName', 50);
-            $table->text('Description')->nullable();
-            $table->integer('Priority')->default(100);
-        });
-
-        // Create brands table
-        Schema::create('brands', function (Blueprint $table) {
-            $table->id('BrandID');
-            $table->string('BrandName', 255);
-            $table->unsignedBigInteger('CategoryID');
-            $table->string('Description', 255);
-            
-            $table->foreign('CategoryID')->references('CategoryID')->on('categories')->onDelete('cascade');
-        });
-
-        // Create products table
+        // Bảng products
         Schema::create('products', function (Blueprint $table) {
-            $table->id('ProductID');
-            $table->unsignedBigInteger('CategoryID');
+            $table->integer('ProductID')->autoIncrement();
+            $table->integer('CategoryID');
             $table->string('ProductName', 100);
             $table->text('Description')->nullable();
             $table->integer('Price');
             $table->integer('StockQuantity')->default(0);
-            $table->unsignedBigInteger('BrandID');
+            $table->unsignedInteger('BrandID');
             $table->string('WarrantyPeriod', 50)->nullable();
             $table->string('ImageURL', 255)->nullable();
             $table->timestamp('CreatedAt')->useCurrent();
             $table->timestamp('UpdatedAt')->useCurrent()->useCurrentOnUpdate();
-            $table->string('VideoLink', 255);
+            $table->string('VideoLink', 255)->default('');
+            $table->decimal('AvgRate', 10, 2)->nullable();
+            $table->integer('CommentCount')->nullable();
             
             $table->foreign('CategoryID')->references('CategoryID')->on('categories');
             $table->foreign('BrandID')->references('BrandID')->on('brands')->onDelete('cascade');
         });
 
-        // Create productspecifications table
-        Schema::create('productspecifications', function (Blueprint $table) {
-            $table->id('SpecID');
-            $table->unsignedBigInteger('ProductID');
-            $table->string('SpecType', 255);
-            $table->text('SpecValue');
-            
-            $table->foreign('ProductID')->references('ProductID')->on('products')->onDelete('cascade');
-        });
-
-        // Create productversions table
+        // Bảng productversions
         Schema::create('productversions', function (Blueprint $table) {
-            $table->id('VersionID');
-            $table->unsignedBigInteger('ProductID');
+            $table->unsignedInteger('VersionID')->autoIncrement();
+            $table->integer('ProductID');
             $table->string('VersionName', 100);
             $table->unsignedInteger('Price');
             
             $table->foreign('ProductID')->references('ProductID')->on('products')->onDelete('cascade');
         });
 
-        // Create productcolors table
+        // Bảng productcolors
         Schema::create('productcolors', function (Blueprint $table) {
-            $table->id('ColorID');
-            $table->unsignedBigInteger('ProductID');
+            $table->unsignedInteger('ColorID')->autoIncrement();
+            $table->integer('ProductID');
             $table->string('Color', 100);
             $table->string('ImgURL', 255);
             
             $table->foreign('ProductID')->references('ProductID')->on('products')->onDelete('cascade');
         });
 
-        // Create productimgs table
+        // Bảng productspecifications
+        Schema::create('productspecifications', function (Blueprint $table) {
+            $table->unsignedInteger('SpecID')->autoIncrement();
+            $table->integer('ProductID');
+            $table->string('SpecType', 255);
+            $table->text('SpecValue');
+            
+            $table->foreign('ProductID')->references('ProductID')->on('products')->onDelete('cascade');
+        });
+
+        // Bảng productimgs
         Schema::create('productimgs', function (Blueprint $table) {
-            $table->id('ImgID');
-            $table->unsignedBigInteger('ProductID');
+            $table->integer('ImgID')->autoIncrement();
+            $table->integer('ProductID');
             $table->string('ImgURL', 255);
             
             $table->foreign('ProductID')->references('ProductID')->on('products')->onDelete('cascade');
         });
 
-        // Create carts table
+        // Bảng carts
         Schema::create('carts', function (Blueprint $table) {
-            $table->id('CartID');
-            $table->unsignedBigInteger('UserID');
+            $table->integer('CartID')->autoIncrement();
+            $table->integer('UserID');
             $table->timestamp('CreatedAt')->useCurrent();
+            $table->boolean('Completed')->default(false);
+            $table->timestamp('UpdatedAt')->useCurrent()->useCurrentOnUpdate();
             
             $table->foreign('UserID')->references('UserID')->on('users');
         });
 
-        // Create cartitems table
+        // Bảng cartitems
         Schema::create('cartitems', function (Blueprint $table) {
-            $table->id('CartItemID');
-            $table->unsignedBigInteger('CartID');
-            $table->unsignedBigInteger('ProductID');
+            $table->integer('CartItemID')->autoIncrement();
+            $table->integer('CartID');
+            $table->integer('ProductID');
             $table->integer('Quantity')->default(1);
+            $table->unsignedInteger('VersionID')->nullable();
+            $table->unsignedInteger('ColorID')->nullable();
             
             $table->foreign('CartID')->references('CartID')->on('carts');
             $table->foreign('ProductID')->references('ProductID')->on('products');
         });
 
-        // Create orders table
+        // Bảng orders
         Schema::create('orders', function (Blueprint $table) {
-            $table->id('OrderID');
-            $table->unsignedBigInteger('UserID');
+            $table->integer('OrderID')->autoIncrement();
+            $table->integer('UserID');
             $table->timestamp('OrderDate')->useCurrent();
             $table->decimal('TotalAmount', 10, 2);
             $table->enum('STATUS', ['Pending', 'Confirmed', 'Shipped', 'Completed', 'Cancelled'])->default('Pending');
@@ -131,11 +140,11 @@ return new class extends Migration
             $table->foreign('UserID')->references('UserID')->on('users');
         });
 
-        // Create orderitems table
+        // Bảng orderitems
         Schema::create('orderitems', function (Blueprint $table) {
-            $table->id('OrderItemID');
-            $table->unsignedBigInteger('OrderID');
-            $table->unsignedBigInteger('ProductID');
+            $table->integer('OrderItemID')->autoIncrement();
+            $table->integer('OrderID');
+            $table->integer('ProductID');
             $table->integer('Quantity');
             $table->decimal('Price', 10, 2);
             
@@ -143,10 +152,10 @@ return new class extends Migration
             $table->foreign('ProductID')->references('ProductID')->on('products');
         });
 
-        // Create payments table
+        // Bảng payments
         Schema::create('payments', function (Blueprint $table) {
-            $table->id('PaymentID');
-            $table->unsignedBigInteger('OrderID');
+            $table->integer('PaymentID')->autoIncrement();
+            $table->integer('OrderID');
             $table->timestamp('PaymentDate')->useCurrent();
             $table->decimal('Amount', 10, 2);
             $table->enum('PaymentMethod', ['CreditCard', 'COD', 'BankTransfer', 'E-Wallet']);
@@ -155,22 +164,9 @@ return new class extends Migration
             $table->foreign('OrderID')->references('OrderID')->on('orders');
         });
 
-        // Create reviews table
-        Schema::create('reviews', function (Blueprint $table) {
-            $table->id('ReviewID');
-            $table->unsignedBigInteger('ProductID');
-            $table->unsignedBigInteger('UserID');
-            $table->tinyInteger('Rating')->unsigned()->checkBetween(1, 5);
-            $table->text('COMMENT')->nullable();
-            $table->timestamp('CreatedAt')->useCurrent();
-            
-            $table->foreign('ProductID')->references('ProductID')->on('products');
-            $table->foreign('UserID')->references('UserID')->on('users');
-        });
-
-        // Create promotions table
+        // Bảng promotions
         Schema::create('promotions', function (Blueprint $table) {
-            $table->id('PromotionID');
+            $table->integer('PromotionID')->autoIncrement();
             $table->string('Title', 100);
             $table->text('Description')->nullable();
             $table->decimal('DiscountPercent', 5, 2);
@@ -178,34 +174,53 @@ return new class extends Migration
             $table->date('EndDate');
         });
 
-        // Create promotionproducts table
+        // Bảng promotionproducts
         Schema::create('promotionproducts', function (Blueprint $table) {
-            $table->unsignedBigInteger('PromotionID');
-            $table->unsignedBigInteger('ProductID');
+            $table->integer('PromotionID');
+            $table->integer('ProductID');
             
             $table->primary(['PromotionID', 'ProductID']);
             $table->foreign('PromotionID')->references('PromotionID')->on('promotions');
             $table->foreign('ProductID')->references('ProductID')->on('products');
         });
+
+        // Bảng reviews
+        Schema::create('reviews', function (Blueprint $table) {
+            $table->integer('ReviewID')->autoIncrement();
+            $table->integer('ProductID');
+            $table->integer('UserID');
+            $table->unsignedTinyInteger('Rating')->check('Rating BETWEEN 1 AND 5');
+            $table->text('COMMENT')->nullable();
+            $table->timestamp('CreatedAt')->useCurrent();
+            
+            $table->foreign('ProductID')->references('ProductID')->on('products');
+            $table->foreign('UserID')->references('UserID')->on('users');
+        });
+
+        
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
+        Schema::dropIfExists('migrations');
+        Schema::dropIfExists('reviews');
         Schema::dropIfExists('promotionproducts');
         Schema::dropIfExists('promotions');
-        Schema::dropIfExists('reviews');
         Schema::dropIfExists('payments');
         Schema::dropIfExists('orderitems');
         Schema::dropIfExists('orders');
         Schema::dropIfExists('cartitems');
         Schema::dropIfExists('carts');
         Schema::dropIfExists('productimgs');
+        Schema::dropIfExists('productspecifications');
         Schema::dropIfExists('productcolors');
         Schema::dropIfExists('productversions');
-        Schema::dropIfExists('productspecifications');
         Schema::dropIfExists('products');
+        Schema::dropIfExists('users');
         Schema::dropIfExists('brands');
         Schema::dropIfExists('categories');
-        Schema::dropIfExists('users');
     }
 };
