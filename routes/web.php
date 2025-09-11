@@ -33,6 +33,10 @@ Route::middleware('auth')->group(function () {
     // Route giỏ hàng
     Route::get('/cart',[CartController::class,'index'])->name('cart.index');
     Route::post('/cart',[CartController::class,'addItem'])->name('cart.addItem');
+    route::post('/cart/increase_quantity/{cartitemID}',[CartController::class,'increaseQuantity'])->name('cart.increase');
+    route::post('/cart/decrease_quantity/{cartitemID}',[CartController::class,'decreaseQuantity'])->name('cart.decrease');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 });
 
 
