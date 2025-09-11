@@ -340,12 +340,248 @@
             <i class="fa-solid fa-star" style="color: #ffd43b"></i>
           </div>
           <p>45 lượt đánh giá</p>
-          <button
-            class="btn rounded"
-            style="background-color: #d7000e; color: white; font-weight: 600"
-          >
-            Viết đánh giá
-          </button>
+
+
+      <!--Viết đánh giá-->
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background: #f5f5f5;
+                }
+
+        
+            #openModal {
+              padding: 10px 20px;
+              border-radius: 8px;
+              background: #d7000e;
+              color: #fff;
+              font-weight: 600;
+              border: none;
+              cursor: pointer;
+              transition: background 0.3s;
+            }
+          #openModal:hover {
+            background: #b8000c;
+          }
+
+          .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+          }
+          .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            width: 600px;
+            max-width: 95%;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: fadeIn 0.25s ease-in-out;
+          }
+
+          .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+          }
+
+          .modal-header h2 {
+          margin: 0;
+          font-size: 20px;
+          font-weight: 700;   
+          color: #333;
+          text-align: center; 
+          flex: 1;            
+          }
+          .close {
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: bold;
+            color: #666;
+          }
+          .close:hover {
+            color: #000;
+          }
+
+          .stars {
+            display: flex;
+            justify-content: space-between; /* chia đều các sao */
+            font-size: 28px;
+            color: #ccc;
+            cursor: pointer;  
+          }
+
+          .rating-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0;
+          }
+
+          .rating-row span {
+            font-weight: 500;
+            color: #444;
+          }
+
+          textarea {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 100px;
+            resize: vertical;
+            font-size: 14px;
+            margin-top: 8px;
+            outline: none;
+          }
+
+          textarea:focus {
+            border-color: #d7000e;
+            box-shadow: 0 0 4px rgba(215, 0, 14, 0.5);
+          }
+
+          .btn-submit {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #d7000e;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+          }
+          .btn-submit:hover {
+            background: #b8000c;
+          }
+        </style>
+      <body>
+        <button id="openModal">Viết đánh giá</button>
+        <div id="reviewModal" class="modal">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h2 >Đánh giá & nhận xét</h2>
+              <span class="close" id="closeModal">&times;</span>
+            </div>
+            
+            <div>
+              <label><b>Đánh giá chung:</b></label>
+              <div class="stars" id="stars">
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:13px; color:#777; margin-top:4px;">
+                <span>Rất tệ</span>
+                <span>Tuyệt vời</span>
+              </div>
+            </div>
+
+          
+            <div style="margin-top:20px;">
+              <div class="rating-row">
+                <span>Hiệu năng</span>
+                <div class="stars sub-stars">
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                </div>
+              </div>
+              <div class="rating-row">
+                <span>Thời lượng pin</span>
+                <div class="stars sub-stars">
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                </div>
+              </div>
+              <div class="rating-row">
+                <span>Màn hình</span>
+                <div class="stars sub-stars">
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                  <span class="sub-star">★</span>
+                </div>
+              </div>
+            </div>
+
+            {{-- Nhận xét --> --}}
+            <div style="margin-top:20px;">
+              <textarea placeholder="Xin mời chia sẻ cảm nhận về sản phẩm (tối thiểu 15 ký tự)..."></textarea>
+            </div>
+
+          
+            <button class="btn-submit">GỬI ĐÁNH GIÁ</button>
+          </div>
+        </div>
+        <script>
+        const submitBtn = document.querySelector(".btn-submit");
+
+        submitBtn.addEventListener("click", () => {
+          const reviewText = document.querySelector("textarea").value.trim();
+
+          if (reviewText.length < 15) {
+            alert("Vui lòng nhập tối thiểu 15 ký tự cho nhận xét.");
+            return;
+          }
+          alert("Đánh giá thành công! Cảm ơn bạn đã gửi đánh giá.");
+
+          document.querySelector("textarea").value = "";
+          document.querySelectorAll("#stars .star").forEach(star => star.style.color = "#ccc");
+          document.querySelectorAll(".sub-stars .sub-star").forEach(star => star.style.color = "#ccc");
+          modal.style.display = "none";
+        });
+      </script>
+        <script>
+        
+          const modal = document.getElementById("reviewModal");
+          const openBtn = document.getElementById("openModal");
+          const closeBtn = document.getElementById("closeModal");
+
+          openBtn.onclick = () => modal.style.display = "flex";
+          closeBtn.onclick = () => modal.style.display = "none";
+          window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
+
+        
+          const stars = document.querySelectorAll("#stars .star");
+          stars.forEach((star, index) => {
+            star.addEventListener("click", () => {
+              stars.forEach((s, i) => {
+                s.style.color = i <= index ? "#fbbf24" : "#ccc";
+              });
+            });
+          });
+          const groups = document.querySelectorAll(".sub-stars");
+          groups.forEach(group => {
+            const subs = group.querySelectorAll(".sub-star");
+            subs.forEach((star, index) => {
+              star.addEventListener("click", () => {
+                subs.forEach((s, i) => {
+                  s.style.color = i <= index ? "#fbbf24" : "#ccc";
+                });
+              });
+            });
+          });
+        </script>
+      </body>
+
         </div>
         <!-- Lượt đánh giá -->
         <div

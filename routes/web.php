@@ -8,11 +8,13 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReviewController;
 
 # Public routes (Customer có thể vào)
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/products/search',[ProductController::class,'searchForCus'])->name('products.searchCustomer');
 Route::get('products/{productID}',[ProductController::class,'show'])->name('product.show');
+
 
 Route::get('/register', [AuthController::class, 'registerView'])->name('register');
 Route::post('/register', [AuthController::class,'create']);
@@ -29,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/overall/{userID}',[UserController::class,'overall'])->name('user.overall');
     Route::get('/user/edit/{userID}',[UserController::class,'editCustomer'])->name('user.edit');
     Route::put('/user/{userID}',[UserController::class,'update']);
+    Route::middleware('auth')->group(function () {
+    Route::post('/product/{id}/review', [ReviewController::class, 'store'])->name('product.review');
+});
 
     // Route giỏ hàng
     Route::get('/cart',[CartController::class,'index'])->name('cart.index');

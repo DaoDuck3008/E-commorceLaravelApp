@@ -1,9 +1,9 @@
 *
 !app/
-!public/
-!public/ads/
-!public/ads/**
-!public/recommendProduct/
-!public/recommendProduct/**
-!logo.png
+!app/public/
+!app/public/ads/
+!app/public/ads/**
+!app/public/recommendProduct/
+!app/public/recommendProduct/**
+!app/public/logo.png
 !.gitignore
