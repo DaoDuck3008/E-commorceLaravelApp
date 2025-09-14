@@ -42,7 +42,7 @@
         <div class="col-md-12">
         <div class="card-custom" >
             <div class="d-flex my-2 ">
-              <h4 class="me-auto text-danger">Bảng Tài khoản/h4>
+              <h4 class="me-auto text-danger">Bảng Tài khoản</h4>
             </div>
             <div class="table-responsive rounded " >
                 <table class="table  align-middle">

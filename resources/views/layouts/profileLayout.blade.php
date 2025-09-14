@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tri ân khách hàng</title>
+    @yield('title')
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -13,6 +13,12 @@
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+
+    <!-- Font Awesome CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <style>
       body {
@@ -89,6 +95,8 @@
         margin-bottom: 8px;
       }
     </style>
+
+    @yield('style')
   </head>
 
   <body>
@@ -105,7 +113,7 @@
             <a class="nav-link {{ request()->is('user/overall*') ? 'active' : '' }}" href="/user/overall/{{ auth()->user()->UserID }}"
               ><i class="bi bi-speedometer2"></i> Tổng quan</a
             >
-            <a class="nav-link" href="#"
+            <a class="nav-link {{ request()->is('order/history*') ? 'active' : '' }}" href="{{ route('order.history') }}"
               ><i class="bi bi-bag-check"></i> Lịch sử mua hàng</a
             >
             <a class="nav-link" href="#"
@@ -133,5 +141,6 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @yield('script')
   </body>
 </html>

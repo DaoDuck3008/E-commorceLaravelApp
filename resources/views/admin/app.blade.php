@@ -65,6 +65,8 @@
       }
     </style>
 
+    @yield('style')
+
     @vite('resources/scss/dashboard.scss')
   </head>
 
@@ -81,7 +83,7 @@
         <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"> Category</a>
         <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"> Brand</a>
         <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"> User</a>
-        <a href="#"> Order</a>
+        <a href="{{ route('admin.order.dashboard') }}" class="{{ request()->is('admin/order*') ? 'active' : '' }}"> Order</a>
       </div>
       
       <div>
@@ -104,5 +106,6 @@
    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @yield('script')
   </body>
 </html>

@@ -137,184 +137,182 @@
           </div>
         </button>
 
+        <!-- Hidden inputs để lưu giá trị version và color -->
+        <input type="hidden" id="selectedVersionID" value="{{ $product->productVersions->first()->VersionID ?? '' }}">
+        <input type="hidden" id="selectedColorID" value="{{ $product->productColors->first()->ColorID ?? '' }}">
 
-        {{--  --}}
-        {{-- Form thêm vào giỏ hàng --}}
-        <form action="{{ route('cart.addItem') }}" method="post">
-        @csrf
-          {{-- truyền productID --}}
-          <input type="hidden" name="productID" value="{{ $product->ProductID }}"/>  
-
-          <!-- Loại -->
-          <div class="version mt-4">
-            <!-- Phiên bản -->
-            <h5><strong>Phiên bản</strong></h5>
-            <div role="group" aria-label="Chọn phiên bản">
-              @foreach ($product->productVersions as $index => $version)
-                <input
-                type="radio"
-                class="btn-check"
-                name="versionID"
-                id="version-{{ $index }}"
-                value="{{ $version->VersionID }}"
-                data-price="{{ $version->Price }}"
-                autocomplete="off"
-                {{ $index == 0 ? "checked" : "" }}
-                />
-                <label class="btn px-4 py-3 mx-1" for="version-{{ $index }}">{{ $version->VersionName }}</label>
-              @endforeach
-            </div>
-
-            <!-- Màu sắc -->
-            <h5 class="mt-2"><strong>Màu sắc</strong></h5>
-            <div role="group" aria-label="Chọn Màu sắc">
-              @foreach ($product->productColors as $index => $color )
-                <input
-                type="radio"
-                class="btn-check"
-                name="colorID"
-                id="color{{ $index }}"
-                value="{{ $color->ColorID }}"
-                autocomplete="off"
-                {{ $index == 0 ? "checked" : "" }}
-                />
-                <label class="btn mx-1 my-2" for="color{{ $index }}">
-                  <div class="d-flex">
-                    <img
-                      width="50"
-                      height="50"
-                      src="{{ $color->ImgURL }}"
-                    />
-                    <div>
-                      <strong>{{ $color->Color }}</strong>
-                    </div>
-                  </div>
-                </label>
-              @endforeach
-            </div>
+        <!-- Loại -->
+        <div class="version mt-4">
+          <!-- Phiên bản -->
+          <h5><strong>Phiên bản</strong></h5>
+          <div role="group" aria-label="Chọn phiên bản">
+            @foreach ($product->productVersions as $index => $version)
+              <input
+              type="radio"
+              class="btn-check version-radio"
+              name="versionID"
+              id="version-{{ $index }}"
+              value="{{ $version->VersionID }}"
+              data-price="{{ $version->Price }}"
+              autocomplete="off"
+              {{ $index == 0 ? "checked" : "" }}
+              />
+              <label class="btn px-4 py-3 mx-1" for="version-{{ $index }}">{{ $version->VersionName }}</label>
+            @endforeach
           </div>
 
-          <!-- Chi nhánh các cửa hàng -->
-          <div class="container mt-2">
-            <div class="pt-3 ps-2 bg-light border rounded row">
-              <!-- Xem chi nhánh của hàng -->
-              <div class="d-flex flex-wrap mb-2">
-                <div class="me-1">
-                  <strong>Xem chi nhánh có hàng</strong><br />
-                  Có <span class="text-primary">28</span> cửa hàng có sẵn sản
-                  phẩm
+          <!-- Màu sắc -->
+          <h5 class="mt-2"><strong>Màu sắc</strong></h5>
+          <div role="group" aria-label="Chọn Màu sắc">
+            @foreach ($product->productColors as $index => $color )
+              <input
+              type="radio"
+              class="btn-check color-radio"
+              name="colorID"
+              id="color{{ $index }}"
+              value="{{ $color->ColorID }}"
+              autocomplete="off"
+              {{ $index == 0 ? "checked" : "" }}
+              />
+              <label class="btn mx-1 my-2" for="color{{ $index }}">
+                <div class="d-flex">
+                  <img
+                    width="50"
+                    height="50"
+                    src="{{ $color->ImgURL }}"
+                  />
+                  <div>
+                    <strong>{{ $color->Color }}</strong>
+                  </div>
                 </div>
+              </label>
+            @endforeach
+          </div>
+        </div>
 
-                <!-- Dropdown -->
-                <div class="mx-1">
-                  <select class="form-select" style="width: auto">
-                    <option>Hà Nội</option>
-                    <option>Hồ Chí Minh</option>
-                  </select>
-                </div>
-                <div class="mx-1">
-                  <select class="form-select" style="width: auto">
-                    <option>Quận/Huyện</option>
-                    <option>Hai Bà Trưng</option>
-                    <option>Đống Đa</option>
-                  </select>
-                </div>
+        <!-- Chi nhánh các cửa hàng -->
+        <div class="container mt-2">
+          <div class="pt-3 ps-2 bg-light border rounded row">
+            <!-- Xem chi nhánh của hàng -->
+            <div class="d-flex flex-wrap mb-2">
+              <div class="me-1">
+                <strong>Xem chi nhánh có hàng</strong><br />
+                Có <span class="text-primary">28</span> cửa hàng có sẵn sản
+                phẩm
               </div>
 
-              <!-- Danh sách cửa hàng -->
-              <div
-                class="store-list d-flex flex-nowrap overflow-x-auto overflow-y-hidden gap-2 mb-3"
-              >
-                <div class="store-card">
-                  <div class="mb-2 fw-semibold">
-                    51 Đại Cồ Việt, Phường Lê Đại Hành, Quận Hai Bà Trưng
-                  </div>
-                  <div class="d-flex gap-2">
-                    <span class="phone-badge">
-                      <i
-                        class="fa-solid fa-phone me-1"
-                        style="color: #d70018"
-                      ></i>
-                      02471000051
-                    </span>
-                    <span class="map-badge">
-                      <i
-                        class="fa-solid fa-location-dot me-1"
-                        style="color: #d70018"
-                      ></i>
-                      Bản đồ
-                    </span>
-                  </div>
-                </div>
-
-                <div class="store-card">
-                  <div class="mb-2 fw-semibold">
-                    282 Minh Khai, Q. Hai Bà Trưng, Hà Nội
-                  </div>
-                  <div class="d-flex gap-2">
-                    <span class="phone-badge">
-                      <i
-                        class="fa-solid fa-phone me-1"
-                        style="color: #d70018"
-                      ></i>
-                      02471010282
-                    </span>
-                    <span class="map-badge">
-                      <i
-                        class="fa-solid fa-location-dot me-1"
-                        style="color: #d70018"
-                      ></i>
-                      Bản đồ
-                    </span>
-                  </div>
-                </div>
+              <!-- Dropdown -->
+              <div class="mx-1">
+                <select class="form-select" style="width: auto">
+                  <option>Hà Nội</option>
+                  <option>Hồ Chí Minh</option>
+                </select>
+              </div>
+              <div class="mx-1">
+                <select class="form-select" style="width: auto">
+                  <option>Quận/Huyện</option>
+                  <option>Hai Bà Trưng</option>
+                  <option>Đống Đa</option>
+                </select>
               </div>
             </div>
-          </div>
 
-          <!-- Phương thức thanh toán -->
-          <div class="row mt-3 d-flex justify-content-center">
+            <!-- Danh sách cửa hàng -->
             <div
-              class="col-2 btn d-flex align-items-center"
+              class="store-list d-flex flex-nowrap overflow-x-auto overflow-y-hidden gap-2 mb-3"
+            >
+              <div class="store-card">
+                <div class="mb-2 fw-semibold">
+                  51 Đại Cồ Việt, Phường Lê Đại Hành, Quận Hai Bà Trưng
+                </div>
+                <div class="d-flex gap-2">
+                  <span class="phone-badge">
+                    <i
+                      class="fa-solid fa-phone me-1"
+                      style="color: #d70018"
+                    ></i>
+                    02471000051
+                  </span>
+                  <span class="map-badge">
+                    <i
+                      class="fa-solid fa-location-dot me-1"
+                      style="color: #d70018"
+                    ></i>
+                    Bản đồ
+                  </span>
+                </div>
+              </div>
+
+              <div class="store-card">
+                <div class="mb-2 fw-semibold">
+                  282 Minh Khai, Q. Hai Bà Trưng, Hà Nội
+                </div>
+                <div class="d-flex gap-2">
+                  <span class="phone-badge">
+                    <i
+                      class="fa-solid fa-phone me-1"
+                      style="color: #d70018"
+                    ></i>
+                    02471010282
+                  </span>
+                  <span class="map-badge">
+                    <i
+                      class="fa-solid fa-location-dot me-1"
+                      style="color: #d70018"
+                    ></i>
+                    Bản đồ
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phương thức thanh toán -->
+        <div class="row mt-3 g-2">
+          <div class="col-12 col-md-2 d-flex">
+            <div class="btn d-flex align-items-center justify-content-center w-100 h-100"
               style="
                 color: #3b82f6;
                 font-weight: 600;
                 border: 2px solid #3b82f6;
                 border-radius: 10px;
-              "
-            >
+              ">
               Trả góp 0%
             </div>
-            <div
-              class="col-6 d-flex flex-column align-items-center btn mx-2"
-              style="
-                color: white;
-                background: linear-gradient(to bottom, #ff4b4b, #d40000);
-              "
-            >
-              <h5 class="mt-1">MUA NGAY</h5>
-              <p>Giao nhanh 2 giờ hoặc nhận tại cửa hàng</p>
-            </div>
-            <div class="col-3 btn ">
-              <button
-                class=" d-flex align-items-center justify-content-center"
-                style="
-                  color: #e03c4e;
-                  font-weight: 600;
-                  border: 2px solid #e03c4e;
-                  border-radius: 10px;
-                "
-                type="submit"
-              >
-                <i class="fa-solid fa-cart-plus me-2"></i>
-                Thêm vào giỏ hàng
-              </button>
-            </div>
           </div>
-        </form>
-        
-
-        
+          
+          <!-- FORM MUA NGAY -->
+          <div class="col-12 col-md-6 d-flex">
+            <form action="{{ route('order.buyNow') }}" method="post" class="w-100 h-100 d-flex">
+              @csrf
+              <input type="hidden" name="productID" value="{{ $product->ProductID }}"/>
+              <input type="hidden" name="versionID" id="buyNowVersionID" value="{{ $product->productVersions->first()->VersionID ?? '' }}"/>
+              <input type="hidden" name="colorID" id="buyNowColorID" value="{{ $product->productColors->first()->ColorID ?? '' }}"/>
+              
+              <button type="submit" class="btn w-100 d-flex flex-column align-items-center justify-content-center h-100"
+                  style="color: white; background: linear-gradient(to bottom, #ff4b4b, #d40000);">
+                  <h5 class="mt-1 mb-0">MUA NGAY</h5>
+                  <p class="mb-0">Giao nhanh 2 giờ hoặc nhận tại cửa hàng</p>
+              </button>
+            </form>
+          </div>
+          
+          <!-- FORM THÊM VÀO GIỎ HÀNG -->
+          <div class="col-12 col-md-4 d-flex">
+            <form action="{{ route('cart.addItem') }}" method="post" class="w-100 h-100 d-flex">
+              @csrf
+              <input type="hidden" name="productID" value="{{ $product->ProductID }}"/>
+              <input type="hidden" name="versionID" id="cartVersionID" value="{{ $product->productVersions->first()->VersionID ?? '' }}"/>
+              <input type="hidden" name="colorID" id="cartColorID" value="{{ $product->productColors->first()->ColorID ?? ''}}"/>
+              
+              <button type="submit" class="btn btn-outline-danger d-flex align-items-center justify-content-center w-100 h-100">
+                  <i class="fa-solid fa-cart-plus me-2"></i>
+                  Thêm vào giỏ hàng
+              </button>
+            </form>
+          </div>
+        </div>
 
         <!-- Video youtube -->
         <div class="container my-4">
@@ -631,8 +629,8 @@
     return price.toLocaleString('vi-VN') + 'đ';
   }
 
-  // Event listener cho các radio button phiên bản
-  document.querySelectorAll('input[name="productVersion"]').forEach(radio => {
+  // Cập nhật giá khi chọn phiên bản
+  document.querySelectorAll('.version-radio').forEach(radio => {
     radio.addEventListener('change', function() {
       let price = parseInt(this.dataset.price);
       
@@ -640,7 +638,52 @@
       document.getElementById('member-price').textContent = formatPrice(price);
       // Cập nhật giá cũ (giá gạch ngang)
       document.getElementById('old-price').textContent = formatPrice(price + 1000000);
+      
+      // Cập nhật giá trị versionID cho cả 2 form
+      document.getElementById('selectedVersionID').value = this.value;
+      document.getElementById('buyNowVersionID').value = this.value;
+      document.getElementById('cartVersionID').value = this.value;
     });
+  });
+
+  // Cập nhật màu sắc khi chọn
+  document.querySelectorAll('.color-radio').forEach(radio => {
+    radio.addEventListener('change', function() {
+      // Cập nhật giá trị colorID cho cả 2 form
+      document.getElementById('selectedColorID').value = this.value;
+      document.getElementById('buyNowColorID').value = this.value;
+      document.getElementById('cartColorID').value = this.value;
+    });
+  });
+
+  // Xử lý form Mua Ngay
+  document.querySelector('form[action="{{ route('order.buyNow') }}"]').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Kiểm tra nếu đã chọn version và color
+    const versionID = document.getElementById('buyNowVersionID').value;
+    const colorID = document.getElementById('buyNowColorID').value;
+    
+    
+    // Gửi form
+    this.submit();
+  });
+
+  // Xử lý form Thêm vào giỏ hàng
+  document.querySelector('form[action="{{ route('cart.addItem') }}"]').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Kiểm tra nếu đã chọn version và color
+    const versionID = document.getElementById('cartVersionID').value;
+    const colorID = document.getElementById('cartColorID').value;
+    
+    if (!versionID || !colorID) {
+      alert('Vui lòng chọn phiên bản và màu sắc trước khi thêm vào giỏ hàng');
+      return;
+    }
+    
+    // Gửi form
+    this.submit();
   });
 </script>
 @endsection

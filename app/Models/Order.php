@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Order extends Model
 {
+
+    public $timestamps = false;
     /**
      * The primary key for the model.
      * 
@@ -25,10 +27,17 @@ class Order extends Model
      */
     protected $primaryKey = 'OrderID';
 
+    protected $casts = [
+        'OrderDate' => 'datetime',
+        'PaymentDate' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
     /**
      * @var array
      */
-    protected $fillable = ['UserID', 'OrderDate', 'TotalAmount', 'STATUS', 'ShippingAddress', 'PaymentMethod'];
+    protected $fillable = ['UserID', 'OrderDate', 'TotalAmount', 'STATUS', 'ShippingAddress', 'PaymentMethod','Description','CancelReason'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -52,5 +61,17 @@ class Order extends Model
     public function payments()
     {
         return $this->hasMany('App\Models\Payment', 'OrderID', 'OrderID');
+    }
+
+    public function getTotalRevenue(){
+        return self::where('STATUS', 'Completed')->sum('TotalAmount');
+    }
+
+
+    public static function getTodayRevenue()
+    {
+        return self::whereDate('OrderDate', today())
+                  ->where('STATUS', 'Completed') 
+                  ->sum('TotalAmount');
     }
 }

@@ -22,6 +22,8 @@ class Orderitem extends Model
      */
     protected $primaryKey = 'OrderItemID';
 
+    public $timestamps = false;
+
     /**
      * @var array
      */
@@ -41,5 +43,15 @@ class Orderitem extends Model
     public function order()
     {
         return $this->belongsTo('App\Models\Order', 'OrderID', 'OrderID');
+    }
+
+    public function version()
+    {
+        return $this->belongsTo(ProductVersion::class, 'VersionID', 'VersionID');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(ProductColor::class, 'ColorID', 'ColorID');
     }
 }

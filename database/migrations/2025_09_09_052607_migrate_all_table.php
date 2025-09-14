@@ -125,6 +125,8 @@ return new class extends Migration
             
             $table->foreign('CartID')->references('CartID')->on('carts');
             $table->foreign('ProductID')->references('ProductID')->on('products');
+            $table->foreign('VersionID')->references('VersionID')->on('productversions');
+            $table->foreign('ColorID')->references('ColorID')->on('productcolors');
         });
 
         // Bảng orders
@@ -136,6 +138,8 @@ return new class extends Migration
             $table->enum('STATUS', ['Pending', 'Confirmed', 'Shipped', 'Completed', 'Cancelled'])->default('Pending');
             $table->text('ShippingAddress');
             $table->string('PaymentMethod', 50)->nullable();
+            $table->text('Description')->nullable();
+            $table->text('CancelReason')->nullable();
             
             $table->foreign('UserID')->references('UserID')->on('users');
         });
@@ -147,9 +151,13 @@ return new class extends Migration
             $table->integer('ProductID');
             $table->integer('Quantity');
             $table->decimal('Price', 10, 2);
+            $table->unsignedInteger('VersionID')->nullable();
+            $table->unsignedInteger('ColorID')->nullable();
             
             $table->foreign('OrderID')->references('OrderID')->on('orders');
             $table->foreign('ProductID')->references('ProductID')->on('products');
+            $table->foreign('VersionID')->references('VersionID')->on('productversions');
+            $table->foreign('ColorID')->references('ColorID')->on('productcolors');
         });
 
         // Bảng payments
@@ -169,9 +177,10 @@ return new class extends Migration
             $table->integer('PromotionID')->autoIncrement();
             $table->string('Title', 100);
             $table->text('Description')->nullable();
-            $table->decimal('DiscountPercent', 5, 2);
-            $table->date('StartDate');
-            $table->date('EndDate');
+            $table->decimal('DiscountPercent', 5, 2)->nullable();
+            $table->date('StartDate')->nullable();
+            $table->date('EndDate')->nullable();
+            $table->string('ImgURL');
         });
 
         // Bảng promotionproducts
