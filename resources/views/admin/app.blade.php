@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
+    @yield('title')
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -80,7 +80,7 @@
       <div>
         <h4 class="px-3 mb-4">Dashboard</h4>
         <a href="/admin" class="{{ request()->is('admin/products*') || request()->is('admin') ? 'active' : '' }}"> Product</a>
-        <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"> Category</a>
+        <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"><i class="fa-solid fa-layer-group me-2"></i> Category</a>
         <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"> Brand</a>
         <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"> User</a>
         <a href="{{ route('admin.order.dashboard') }}" class="{{ request()->is('admin/order*') ? 'active' : '' }}"> Order</a>

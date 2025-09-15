@@ -1,23 +1,6 @@
 <!-- Sidebar ở bên trái -->
 <div class="sidebar-container col-2 border rounded px-2 position-relative">
-  {{-- <ul class="list-unstyled">
-    @foreach($categories as $category)
-        <li class="my-2 sidebar-items" 
-            data-id="{{ $category->CategoryID }}" 
-            role="button">
-            <a class="d-flex justify-content-between btn" style="font-weight:600"
-             href={{ route('products.searchCustomer',['category' => $category->CategoryID]) }}>
-                <div> {{ $category->CategoryName }}</div>
-                <span class="right">
-                    <i class="fa-solid fa-angle-right"></i>
-                </span>
-            </a>
-        </li>
-    @endforeach
-  </ul> --}}
-
   <ul id="categoryList" class="list-unstyled">
-        <!-- categories sẽ được render bằng JS -->
   </ul>
 
 
@@ -66,7 +49,7 @@
         const sidebarContainer = document.querySelector(".sidebar-container");
         
         // Sử dụng event delegation
-        sidebarContainer.addEventListener("mouseenter", function(e) {
+        sidebarContainer.addEventListener("click", function(e) {
             const sidebarItem = e.target.closest('.sidebar-items');
             if (!sidebarItem) return;
             
@@ -109,11 +92,15 @@
                 
                 categories.forEach(category => {
                     container.innerHTML += `
-                        <li class="my-2 sidebar-items" data-id="${category.CategoryID}" role="button">
-                            <a class="d-flex justify-content-between btn" style="font-weight:600"
+                        <li class="d-flex justify-content-between mb-2" role="button">
+                            <a class="btn" style="font-weight:600"
                             href="/products/search?category=${category.CategoryID}">
-                                <div>${category.CategoryName}</div>
-                                <span class="right">
+                                <div>
+                                    <i class="fa-icon fa-solid fa-${category.Icon} me-2"></i>${category.CategoryName}
+                                </div>
+                            </a>
+                            <a class=" btn" style="font-weight:600" >
+                                <span class="my-2 sidebar-items right" data-id="${category.CategoryID}">
                                     <i class="fa-solid fa-angle-right"></i>
                                 </span>
                             </a>

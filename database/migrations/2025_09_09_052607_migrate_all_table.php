@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('CategoryName', 50);
             $table->text('Description')->nullable();
             $table->integer('Priority')->default(100);
+            $table->string('Icon')->nullable();
         });
 
         // Bảng brands
