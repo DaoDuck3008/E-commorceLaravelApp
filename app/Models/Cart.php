@@ -25,7 +25,7 @@ class Cart extends Model
     const UPDATED_AT = 'UpdatedAt';
 
 
-    protected $fillable = ['CartID','UserID' ,'ProductID', 'VersionID', 'ColorID', 'Quantity'];
+    protected $fillable = ['CartID','UserID' ,'ProductID', 'VersionID', 'ColorID', 'Quantity','Completed'];
     
 
     /**

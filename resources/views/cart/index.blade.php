@@ -31,7 +31,7 @@
 
                 <div class="flex-grow-1">
                     <div class="d-flex justify-content-between">
-                        <div>
+                        <div class="d-flex flex-column">
                             <a href="/products/{{ $item->ProductID }}" class="product-name fw-semibold text-dark" style="text-decoration: none; font-weight: 600">
                                 {{ $item->product->ProductName }} 
                                 <br />
@@ -49,7 +49,7 @@
                         </form>
                     </div>
                     <div class="d-flex justify-content-end align-items-center mt-2">
-                        <span class="text-danger me-3 small">Đã giảm 500.000đ S.Student</span>
+                        <span class="text-danger me-3 small">Đã giảm 1.000.000đ S.Student</span>
                         <div class="input-group quantity-control ms-auto border rounded">
                             <form action="{{ route('cart.decrease', $item->CartItemID) }}" method="POST" class="d-inline">
                                 @csrf
@@ -137,6 +137,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCountElement = document.getElementById('selected-count');
     const checkoutBtn = document.getElementById('checkout-btn');
 
+    // Khôi phục trạng thái từ sessionStorage
+    function restoreSelectionState() {
+        const savedSelection = sessionStorage.getItem('cartSelection');
+        if (savedSelection) {
+            const selectedItems = JSON.parse(savedSelection);
+            
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectedItems.includes(checkbox.value);
+            });
+            
+            updateSelectedTotal();
+        }
+    }
+
+    // Lưu trạng thái vào sessionStorage
+    function saveSelectionState() {
+        const selectedItems = [];
+        itemCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedItems.push(checkbox.value);
+            }
+        });
+        sessionStorage.setItem('cartSelection', JSON.stringify(selectedItems));
+    }
+
     // Cập nhật tổng tiền và số lượng
     function updateSelectedTotal() {
         let total = 0;
@@ -155,15 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Cập nhật UI
         selectedTotalElement.textContent = formatCurrency(total) + 'đ';
         selectedCountElement.textContent = count;
-
-        // Cập nhật trạng thái nút thanh toán
         checkoutBtn.disabled = count === 0;
         
         // Cập nhật trạng thái select all
         updateSelectAllState();
         
-        // Lưu selected items vào sessionStorage hoặc hidden form
-        sessionStorage.setItem('selectedCartItems', JSON.stringify(selectedItems));
+        // Lưu trạng thái
+        saveSelectionState();
     }
 
     // Định dạng tiền tệ
@@ -193,16 +216,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Xử lý nút thanh toán
-    checkoutBtn.addEventListener('click', function() {
-        const selectedItems = JSON.parse(sessionStorage.getItem('selectedCartItems') || '[]');
+     checkoutBtn.addEventListener('click', function() {
+        const selectedItems = JSON.parse(sessionStorage.getItem('cartSelection') || '[]');
         if (selectedItems.length > 0) {
-            // Chuyển đến trang thanh toán với các item đã chọn
-            // window.location.href = `/checkout?items=${selectedItems.join(',')}`;
+            // Chuyển đến trang thanh toán
+            window.location.href = `/checkout?items=${selectedItems.join(',')}`;
         }
     });
+    
 
-    // Khởi tạo ban đầu
-    updateSelectedTotal();
+    // Khôi phục trạng thái khi trang load
+    restoreSelectionState();
+    
+    // Xử lý sự kiện pageshow cho browser back/forward
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            // Trang được load từ bfcache (back/forward)
+            restoreSelectionState();
+        }
+    });
 });
 </script>
 @endsection

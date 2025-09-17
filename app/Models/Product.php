@@ -132,4 +132,17 @@ class Product extends Model
      {
          return $this->reviews()->count();
      }
+
+     public function getTotalStockQuantity(){
+        return self::sum('StockQuantity');
+     }
+
+     public function getTotalPhone(){
+        return self::whereHas('category', function($query) {$query->where('CategoryName','like',"%Điện thoại%");})->count();
+     }
+
+     public function getTotalLaptop(){
+        return self::whereHas('category', function($query) {$query->where('CategoryName','like',"%Laptop%")
+                                                                        ->orWhere('CategoryName','like',"%PC%");})->count();
+     }
 }

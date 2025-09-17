@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
+    @yield('title')
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -65,6 +65,8 @@
       }
     </style>
 
+    @yield('style')
+
     @vite('resources/scss/dashboard.scss')
   </head>
 
@@ -77,12 +79,13 @@
     <div class="sidebar shadow rounded d-flex flex-column justify-content-between">
       <div>
         <h4 class="px-3 mb-4">Dashboard</h4>
-        <a href="/admin" class="{{ request()->is('admin/products*') || request()->is('admin') ? 'active' : '' }}"> Product</a>
-        <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"> Category</a>
-        <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"> Brand</a>
-        <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"> User</a>
-        <a href="/admin/promotion" class="{{ request()->is('admin/promotion*') ? 'active' : '' }}"> Promotion</a>
-        <a href="#"> Order</a>
+        <a href="/admin" class="{{ request()->is('admin/products*') || request()->is('admin') ? 'active' : '' }}"><i class="fa-solid fa-window-restore me-2"></i> Quản lý sản phẩm</a>
+        <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"><i class="fa-solid fa-layer-group me-2"></i> Quản lý danh mục</a>
+        <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"><i class="fa-solid fa-copyright me-2"></i> Quản lý thương hiệu </a>
+        <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"><i class="fa-solid fa-users me-2"></i> Quản lý người dùng</a>
+        <a href="{{ route('admin.order.dashboard') }}" class="{{ request()->is('admin/order*') ? 'active' : '' }}"><i class="fa-solid fa-truck-moving me-2"></i> Quản lý đơn hàng</a>
+        <a href="/admin/promotion" class="{{ request()->is('admin/promotion*') ? 'active' : '' }}"> Quản lý khuyến mãi</a>
+
       </div>
       
       <div>
@@ -105,5 +108,6 @@
    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @yield('script')
   </body>
 </html>

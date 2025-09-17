@@ -1,72 +1,39 @@
 @extends('admin.app')
 
-@section('content')
-    <!-- Topbar -->
-    <div class="topbar">
-      <input
-        type="text"
-        class="form-control w-25"
-        placeholder="Tìm kiếm..."
-      />
-      
-    </div>
-    <!-- Cards -->
-    <div class="row g-3">
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Tổng sản phẩm</h6>
-            <h3>1,250</h3>
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Người dùng</h6>
-            <h3>3,450</h3>
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Mã giảm giá</h6>
-            <h3>120</h3>
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Đơn hàng</h6>
-            <h3>980</h3>
-        </div>
-        </div>
-    </div>
+@section('title')
+  <title>Quản lý danh mục hàng</title>
+@endsection
 
+@section('content')
     <div class="row g-3 mt-2">
         <div class="col-md-12">
         <div class="card-custom" >
             <div class="d-flex my-2 ">
-              <h4 class="me-auto text-danger">Bảng danh mục sản phẩm</h4>
+              <h4 class="me-auto text-danger" style="font-weight: 600"><i class="fa-solid fa-layer-group me-2"></i>Bảng danh mục sản phẩm</h4>
               <a href="/admin/category/create" class="btn btn-success">Thêm mới danh mục</a>
             </div>
-            <div class="table-responsive rounded " >
-                <table class="table  align-middle">
+            <div class="table-responsive rounded" style="max-height: 700px; overflow-y: auto; overflow-x:auto">
+                <table class="table table-hover align-middle">
                   <thead class="table-danger sticky-top" >
                     <tr >
                       <th scope="col">#</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Actions</th>
+                      <th scope="col">Danh mục hàng</th>
+                      <th scope="col">Mô tả danh mục hàng</th>
+                      <th scope="col">Thao tác</th>
                     </tr>
                   </thead>
                   <tbody  style="max-height: 400px; overflow-y: auto; overflow-x:auto">
                     @foreach ($categories as $index => $category )
                       <tr>
                         <th scope="row">{{ $index +1 }}</th>
-                        <td>{{ $category->CategoryName }}</td>
+                        <td><i class="fa-icon fa-solid fa-{{ $category->Icon }} me-2"></i>{{ $category->CategoryName }}</td>
                         <td class="text-truncate " style="white-space: nowrap; oveflow-x: scroll; max-width: 300px ">{{ $category->Description }}</td>
                         <td class="d-flex gap-1">
-                          <a  href="/admin/category/{{ $category->CategoryID }}/edit" class="btn btn-sm btn-primary">Update</a>
-                          <form method="post" action="/admin/category/{{ $category->CategoryID }}">
+                          <a  href="/admin/category/{{ $category->CategoryID }}/edit" class="btn btn-sm btn-primary">Sửa</a>
+                          <form method="post" action="/admin/category/{{ $category->CategoryID }}" onsubmit="Bạn có chắc muốn xóa danh mục hàng này không?">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger">Delete</button>
+                            <button class="btn btn-sm btn-danger">Xóa</button>
                           </form>
                         </td>
                       </tr>

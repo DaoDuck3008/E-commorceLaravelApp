@@ -25,6 +25,7 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
+            'icon' =>  'nullable|string',
         ]);
 
         DB::beginTransaction();
@@ -33,6 +34,7 @@ class CategoryController extends Controller
             Category::create([
                 'CategoryName' => $request->name,
                 'Description' => $request->description,
+                'Icon' => $request->icon
             ]);
 
             DB::commit();
@@ -61,6 +63,7 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
+            'icon' =>  'nullable|string',
         ]);
 
         DB::beginTransaction();
@@ -70,6 +73,7 @@ class CategoryController extends Controller
             $category->update([
                 'CategoryName' => $request->name,
                 'Description' => $request->description,
+                'Icon' => $request->icon
             ]);
 
             DB::commit();

@@ -1,5 +1,9 @@
 @extends('layouts.profileLayout')
 
+@section('title')
+    <title>Thông tin tài khoản</title>
+@endsection
+
 @section('content')
 
     <div class="row g-3 mt-1">

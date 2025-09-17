@@ -19,8 +19,8 @@
     />
     <!-- HomePage CSS -->
     @vite('resources/scss/app.scss')
-    
     @vite('resources/scss/product.scss')
+    @yield('style')
 </head>
 <body>
     {{-- Header --}}

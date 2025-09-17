@@ -1,30 +1,54 @@
 @extends('admin.app')
 
+@section('title')
+    <title>Quản lý sản phẩm</title>
+@endsection
+
+@section('style')
+  <style>
+    .icon{
+      border-radius: 50%;
+    }
+  </style>
+@endsection
+
 @section('content')
     <!-- Cards -->
     <div class="row g-3">
         <div class="col-md-3">
         <div class="card-custom">
-            <h6>Tổng sản phẩm</h6>
-            <h3>1,250</h3>
+            <h6>Tổng mặt hàng</h6>
+            <div class="d-flex justify-content-between">
+              <h3>{{ $products->count() }}</h3>
+              <h3 class="icon bg-info ps-1 py-1"><i class="fa-solid fa-folder text-white me-2"></i></h3>
+            </div>
         </div>
         </div>
         <div class="col-md-3">
         <div class="card-custom">
-            <h6>Người dùng</h6>
-            <h3>3,450</h3>
+            <h6>Tổng số lượng trong kho</h6>
+            <div class="d-flex justify-content-between">
+              <h3>{{ number_format( $products->first()->getTotalStockQuantity(), 0,',','.') }}</h3>
+              <h3 class="icon bg-secondary ps-1 py-1"><i class="fa-solid fa-copy text-white me-2"></i></h3>
         </div>
-        </div>
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Mã giảm giá</h6>
-            <h3>120</h3>
         </div>
         </div>
         <div class="col-md-3">
         <div class="card-custom">
-            <h6>Đơn hàng</h6>
-            <h3>980</h3>
+            <h6>Mặt hàng Điện thoại</h6>
+            <div class="d-flex justify-content-between">
+              <h3>{{ $products->first()->getTotalLaptop() }}</h3>
+              <h3 class="icon bg-warning ps-2 pe-1 py-1"><i class="fa-solid fa-mobile-screen-button text-white me-2"></i></h3>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-3">
+        <div class="card-custom">
+            <h6>Mặt hàng Laptop & Máy tính</h6>
+            <div class="d-flex justify-content-between">
+              <h3>{{ $products->first()->getTotalLaptop() }}</h3>
+              <h3 class="icon bg-success py-2 ps-1"><i class="fa-solid fa-laptop text-white me-2"></i></h3>
+            </div>
         </div>
         </div>
     </div>
@@ -36,11 +60,11 @@
         <div class="col-md-12">
         <div class="card-custom">
             <div class="d-flex my-2 ">
-              <h4 class="me-auto">Biểu đồ hàng hóa</h4>
+              <h4 class="me-auto text-danger"><strong><i class="fa-solid fa-window-restore me-2"></i>Biểu đồ hàng hóa</strong></h4>
               <a href="admin/products/create" class="btn btn-success">Thêm mới sản phẩm</a>
             </div>
-            <div class="table-responsive rounded " >
-                <table class="table  align-middle " >
+            <div class="table-responsive rounded" style="max-height: 1000px; overflow-y: auto; overflow-x: auto">
+                <table class="table table-hover align-middle " >
                   <thead class="table-danger sticky-top" >
                     <tr >
                       <th scope="col">#</th>

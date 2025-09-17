@@ -22,6 +22,8 @@ class Payment extends Model
      */
     protected $primaryKey = 'PaymentID';
 
+    public $timestamps = false;
+
     /**
      * @var array
      */

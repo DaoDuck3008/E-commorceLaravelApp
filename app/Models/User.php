@@ -70,4 +70,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Review', 'UserID', 'UserID');
     }
 
+    public function getTotalCustomer(){
+        return self::where('Role', 'Customer')->count();
+    }
+
+    public function getTotalStaff(){
+        return self::where('Role', 'Staff')->count();
+    }
+
+
+    public function getTotalAdmin(){
+        return self::where('Role', 'Admin')->count();
+    }
 }
