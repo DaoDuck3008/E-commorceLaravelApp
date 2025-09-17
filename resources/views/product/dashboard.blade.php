@@ -28,7 +28,7 @@
         <div class="card-custom">
             <h6>Tổng số lượng trong kho</h6>
             <div class="d-flex justify-content-between">
-              <h3>{{ number_format( $products->first()->getTotalStockQuantity(), 0,',','.') }}</h3>
+              <h3>{{ $products->first() ? number_format($products->first()->getTotalStockQuantity(), 0,',','.') : 0 }}</h3>
               <h3 class="icon bg-secondary ps-1 py-1"><i class="fa-solid fa-copy text-white me-2"></i></h3>
         </div>
         </div>
