@@ -61,10 +61,12 @@ Route::middleware(['role:Admin'])->prefix('/admin')->group(function () {
 
     Route::resource('/category', CategoryController::class)->except(['show']);
 
+    Route::get('/brand/search',[BrandController::class,'search'])->name('admin.brand.search');
     Route::resource('/brand', BrandController::class)->except(['show']);
     Route::get('/brands-by-category/{categoryID}', [BrandController::class,'getByCategory']);
 
     Route::get('/user', [UserController::class, 'index'])->name('admin.user.index');
+    Route::get('/user/search',[UserController::class,'search'])->name('admin.user.search');
     Route::get('/user/{UserID}/edit', [UserController::class,'edit'])->name('admin.user.edit');
     Route::put('/user/{UserID}',[UserController::class,'update'])->name('admin.user.update');
     Route::delete('/user/{UserID}',[UserController::class,'destroy'])->name('admin.user.destroy');

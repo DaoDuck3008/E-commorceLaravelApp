@@ -1,31 +1,54 @@
 @extends('admin.app')
 
+@section('title')
+    <title>Quản lý đơn hàng</title>
+@endsection
+
+@section('style')
+    <style>
+        .icon{
+            border-radius: 50%;
+        }
+    </style>
+@endsection
+
 @section('content')
-    
     <!-- Cards -->
     <div class="row g-3 mb-3">
         <div class="col-md-3">
         <div class="card-custom">
             <h6>Tổng số đơn hàng</h6>
-            <h3>{{ $orders->count() }}</h3>
+            <div class="d-flex justify-content-between">
+                <h3>{{ $orders->count() }}</h3>
+                <h3 class="icon bg-danger px-2 py-1"><i class="fa-solid fa-cart-shopping text-white"></i></h3>
+            </div>
         </div>
         </div>
         <div class="col-md-3">
         <div class="card-custom">
             <h6>Số lượng đơn hàng trong mỗi đơn</h6>
-            <h3>{{ $orderitems->count() }}</h3>
+            <div class="d-flex justify-content-between">
+                <h3>{{ $orderitems->count() }}</h3>
+                <h3 class="icon bg-secondary px-2 py-1"><i class="fa-solid fa-layer-group text-white"></i></h3>
+            </div>
         </div>
         </div>
         <div class="col-md-3">
         <div class="card-custom">
             <h6>Tổng doanh thu</h6>
-            <h3>{{number_format($orders->first()->getTotalRevenue(),0,',','.')}} VNĐ</h3>
+            <div class="d-flex justify-content-between">
+                <h3>{{number_format($orders->first()->getTotalRevenue(),0,',','.')}} VNĐ</h3>
+                <h3 class="icon bg-warning px-2 py-1"><i class="fa-solid fa-hand-holding-dollar text-white"></i></h3>
+            </div>
         </div>
         </div>
         <div class="col-md-3">
         <div class="card-custom">
             <h6>Tổng doanh thu trong ngày</h6>
-            <h3>{{number_format($orders->first()->getTodayRevenue(),0,',','.')}} VNĐ</h3>
+            <div class="d-flex justify-content-between">
+                <h3>{{number_format($orders->first()->getTodayRevenue(),0,',','.')}} VNĐ</h3>
+                <h3 class="icon bg-info px-2 py-1"><i class="fa-solid fa-money-bill text-white"></i></h3>
+            </div>
         </div>
         </div>
     </div>

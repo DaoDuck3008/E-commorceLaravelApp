@@ -12,8 +12,8 @@
               <h4 class="me-auto text-danger" style="font-weight: 600"><i class="fa-solid fa-layer-group me-2"></i>Bảng danh mục sản phẩm</h4>
               <a href="/admin/category/create" class="btn btn-success">Thêm mới danh mục</a>
             </div>
-            <div class="table-responsive rounded " >
-                <table class="table  align-middle">
+            <div class="table-responsive rounded" style="max-height: 700px; overflow-y: auto; overflow-x:auto">
+                <table class="table table-hover align-middle">
                   <thead class="table-danger sticky-top" >
                     <tr >
                       <th scope="col">#</th>

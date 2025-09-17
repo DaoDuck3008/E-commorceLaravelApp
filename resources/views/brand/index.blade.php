@@ -1,52 +1,39 @@
 @extends('admin.app')
 
+@section('title')
+  <title>Quản lý thương hiệu</title>
+@endsection
+
 @section('content')
     <!-- Topbar -->
     <div class="topbar">
-      <input
-        type="text"
-        class="form-control w-25"
-        placeholder="Tìm kiếm..."
-      />
+      <form action="{{ route('admin.brand.search') }}" method="get" class="w-50">
+      @csrf
+        <div class="d-flex align-items-center">
+          <label  class="text-danger"><strong><i class="fa-solid fa-magnifying-glass me-3"></i></strong></label>
+          <input
+            type="text"
+            class="form-control me-2"
+            name="input"
+            placeholder="Tìm kiếm theo tên thương hiệu"
+          />
+          <a href="/admin/brand" class="btn btn-danger">
+            <strong>X</strong>
+          </a>
+        </div>
+        
+      </form>
       
     </div>
-    <!-- Cards -->
-    <div class="row g-3">
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Tổng sản phẩm</h6>
-            <h3>1,250</h3>
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Người dùng</h6>
-            <h3>3,450</h3>
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Mã giảm giá</h6>
-            <h3>120</h3>
-        </div>
-        </div>
-        <div class="col-md-3">
-        <div class="card-custom">
-            <h6>Đơn hàng</h6>
-            <h3>980</h3>
-        </div>
-        </div>
-    </div>
-
     <div class="row g-3 mt-2">
         <div class="col-md-12">
         <div class="card-custom" >
             <div class="d-flex my-2 ">
-              <h4 class="me-auto text-danger">Bảng danh mục thương hiệu</h4>
+              <h4 class="me-auto text-danger" style="font-weight: 600"><i class="fa-solid fa-copyright me-2"></i>Bảng danh mục thương hiệu</h4>
               <a href="/admin/brand/create" class="btn btn-success">thêm thương hiệu mới</a>
             </div>
-            <div class="table-responsive rounded " >
-                <table class="table  align-middle">
+            <div class="table-responsive rounded " style="max-height: 700px; overflow-y: auto; overflow-x:auto">
+                <table class="table table-hover align-middle">
                   <thead class="table-danger sticky-top" >
                     <tr >
                       <th scope="col">#</th>
@@ -56,7 +43,7 @@
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
-                  <tbody  style="max-height: 400px; overflow-y: auto; overflow-x:auto">
+                  <tbody >
                     @foreach ($brands as $index => $brand )
                       <tr>
                         <th scope="row">{{ $index +1 }}</th>

@@ -79,11 +79,11 @@
     <div class="sidebar shadow rounded d-flex flex-column justify-content-between">
       <div>
         <h4 class="px-3 mb-4">Dashboard</h4>
-        <a href="/admin" class="{{ request()->is('admin/products*') || request()->is('admin') ? 'active' : '' }}"> Product</a>
-        <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"><i class="fa-solid fa-layer-group me-2"></i> Category</a>
-        <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"> Brand</a>
-        <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"> User</a>
-        <a href="{{ route('admin.order.dashboard') }}" class="{{ request()->is('admin/order*') ? 'active' : '' }}"> Order</a>
+        <a href="/admin" class="{{ request()->is('admin/products*') || request()->is('admin') ? 'active' : '' }}"><i class="fa-solid fa-window-restore me-2"></i> Quản lý sản phẩm</a>
+        <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"><i class="fa-solid fa-layer-group me-2"></i> Quản lý danh mục</a>
+        <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"><i class="fa-solid fa-copyright me-2"></i> Quản lý thương hiệu </a>
+        <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"><i class="fa-solid fa-users me-2"></i> Quản lý người dùng</a>
+        <a href="{{ route('admin.order.dashboard') }}" class="{{ request()->is('admin/order*') ? 'active' : '' }}"><i class="fa-solid fa-truck-moving me-2"></i> Quản lý đơn hàng</a>
       </div>
       
       <div>

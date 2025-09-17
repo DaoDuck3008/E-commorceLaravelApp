@@ -677,10 +677,6 @@
     const versionID = document.getElementById('cartVersionID').value;
     const colorID = document.getElementById('cartColorID').value;
     
-    if (!versionID || !colorID) {
-      alert('Vui lòng chọn phiên bản và màu sắc trước khi thêm vào giỏ hàng');
-      return;
-    }
     
     // Gửi form
     this.submit();

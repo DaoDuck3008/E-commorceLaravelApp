@@ -128,7 +128,7 @@
     let html = '';
     
     orders.forEach((order, index) => {
-        if(index > 3){
+        if(index > 4){
           html += `
             <div class="d-flex justify-content-center">
               <a class="btn btn-danger" href="{{ route('order.history') }}">Xem thêm</a>

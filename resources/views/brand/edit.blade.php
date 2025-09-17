@@ -1,5 +1,9 @@
 @extends('admin.app')
 
+@section('title')
+  <title>Quản lý thương hiệu</title>
+@endsection
+
 @section('content')
 
     <div class="row g-3 mt-1">

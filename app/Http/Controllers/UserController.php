@@ -92,6 +92,20 @@ class UserController extends Controller
         return view('user.overall',['user'=> $user]);
     }
 
+    public function search(Request $request){
+        $request->validate([
+            'input' => 'string|nullable',
+        ]);
+
+        $users = User::where('FullName','like',"%{$request->input}%")
+                    ->orWhere('Email','like',"%{$request->input}%")
+                    ->orWhere('PhoneNumber','like',"%{$request->input}%")
+                    ->orWhere('Role','like',"%{$request->input}%")
+                    ->get();
+
+        return view('user.index',['users'=> $users]);
+    }
+
     public function profile($id){
         $user = User::findOrFail($id);
 

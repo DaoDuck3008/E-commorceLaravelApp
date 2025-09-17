@@ -1,7 +1,10 @@
 @extends('admin.app')
 
-@section('content')
+@section('title')
+  <title>Quản lý tài khoản</title>
+@endsection
 
+@section('content')
     <div class="row g-3 mt-1">
         <div class="col-md-12" >
             <div class="card-custom">

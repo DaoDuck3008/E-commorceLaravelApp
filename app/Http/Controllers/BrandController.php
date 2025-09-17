@@ -106,6 +106,23 @@ class BrandController extends Controller
         }
     }
 
+    public function search(Request $request){
+        $request->validate([
+            'input' => 'nullable|string'
+        ]);
+
+        $keyword = $request->input;
+
+        $brands = Brand::where('BrandName','like',"%{$request->input}%")
+                        ->orWhere('Description','like',"%{$request->input}%")
+                        ->orWhereHas('categories', function($query) use ($keyword){
+                            $query->where('CategoryName', 'like',"%{$keyword}%");
+                        })
+                        ->get();
+
+        return view('brand.index',['brands'=> $brands]);
+    }
+
     public function getByCategory($id){
         $brands = Brand::where('CategoryID', $id)->get();
 
