@@ -29,7 +29,7 @@
         <div class="card-custom">
             <h6>Tổng số tài khoản khách</h6>
             <div class="d-flex justify-content-between">
-              <h3>{{ $users->first()->getTotalCustomer() }}</h3>
+              <h3>{{ $users->first() ? $users->first()->getTotalCustomer() : 0 }}</h3>
               <h3 class="icon bg-info px-2 py-1"><i class="fa-solid fa-user text-white"></i></h3>
             </div>
         </div>
@@ -38,7 +38,7 @@
         <div class="card-custom">
             <h6>Tổng số tài khoản nhân viên</h6>
             <div class="d-flex justify-content-between">
-              <h3>{{ $users->first()->getTotalStaff() }}</h3>
+              <h3>{{ $users->first() ? $users->first()->getTotalStaff() : 0 }}</h3>
               <h3 class="icon bg-warning px-2 py-1"><i class="fa-solid fa-user-tie text-white"></i></h3>
             </div>
         </div>
@@ -47,7 +47,7 @@
         <div class="card-custom">
             <h6>Tổng số tài khoản Admin</h6>
             <div class="d-flex justify-content-between">
-              <h3>{{ $users->first()->getTotalAdmin() }}</h3>
+              <h3>{{ $users->first() ? $users->first()->getTotalAdmin() : 0 }}</h3>
               <h3 class="icon bg-danger px-2 py-1"><i class="fa-solid fa-user-nurse text-white"></i></h3>
             </div>
         </div>

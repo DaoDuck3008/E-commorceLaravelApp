@@ -37,7 +37,7 @@
         <div class="card-custom">
             <h6>Mặt hàng Điện thoại</h6>
             <div class="d-flex justify-content-between">
-              <h3>{{ $products->first()->getTotalLaptop() }}</h3>
+              <h3>{{$products->first() ? $products->first()->getTotalLaptop() : 0}}</h3>
               <h3 class="icon bg-warning ps-2 pe-1 py-1"><i class="fa-solid fa-mobile-screen-button text-white me-2"></i></h3>
             </div>
         </div>
@@ -46,7 +46,7 @@
         <div class="card-custom">
             <h6>Mặt hàng Laptop & Máy tính</h6>
             <div class="d-flex justify-content-between">
-              <h3>{{ $products->first()->getTotalLaptop() }}</h3>
+              <h3>{{ $products->first() ? $products->first()->getTotalLaptop() : 0 }}</h3>
               <h3 class="icon bg-success py-2 ps-1"><i class="fa-solid fa-laptop text-white me-2"></i></h3>
             </div>
         </div>
