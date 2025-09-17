@@ -21,11 +21,12 @@ class Promotion extends Model
      * @var string
      */
     protected $primaryKey = 'PromotionID';
+    public $timestamps = false;
 
     /**
      * @var array
      */
-    protected $fillable = ['Title', 'Description', 'DiscountPercent', 'StartDate', 'EndDate'];
+    protected $fillable = ['Title', 'Description', 'DiscountPercent', 'StartDate', 'EndDate', 'ImgURL'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

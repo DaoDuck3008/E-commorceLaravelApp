@@ -81,6 +81,7 @@
         <a href="/admin/category" class="{{ request()->is('admin/category*') ? 'active' : '' }}"> Category</a>
         <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"> Brand</a>
         <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"> User</a>
+        <a href="/admin/promotion" class="{{ request()->is('admin/promotion*') ? 'active' : '' }}"> Promotion</a>
         <a href="#"> Order</a>
       </div>
       

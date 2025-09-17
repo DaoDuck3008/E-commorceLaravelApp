@@ -13,6 +13,6 @@ class HomeController extends Controller
         $products = Product::all();
         $categories = Category::orderBy('Priority', 'asc')->get();
 
-        return view('product.index',['products' => $products,'categories' => $categories]);
+        return view('product.index',['products' => $products]);
     }
 }
