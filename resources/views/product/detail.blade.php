@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+@section('style')
+<style>
+  .carousel-item img {
+  width: 100%;
+  height: 340px; 
+  -o-object-fit: contain;
+     object-fit: contain; 
+}
+</style>
+@endsection
+
 @section('content')
 <main class="container mt-3">
     <!-- Điều hướng trang  -->
@@ -17,6 +28,14 @@
       <div class="col-12 col-md-6">
         <!-- Tên sản phẩm -->
         <h4>{{ $product->ProductName }}</h4>
+        <div class="d-flex gap-2 float-end">
+          <button class="btn btn-primary">
+            <i class="fa-solid fa-thumbs-up me-2"></i>Like
+          </button>
+          <button class="btn btn-primary">
+            <i class="fa-solid fa-share me-2"></i>Share
+          </button>
+        </div>
         <div class="d-flex">
           <i class="fa-solid fa-star mt-1 me-2" style="color: #ffd43b"></i>
           <p><b>4.9</b> (329 đánh giá)</p>
@@ -51,9 +70,9 @@
           data-bs-ride="carousel"
         >
           <!-- Main Carousel -->
-          <div class="carousel-inner text-center ads-container-product">
+          <div class="carousel-inner text-center ads-container-product carousel slide" id="productCarousel">
             @foreach($product->productImgs as $index => $img)
-            <div class="carousel-item-product {{ $index == 0 ? "active" : "" }} ">
+            <div class="carousel-item {{ $index == 0 ? "active" : "" }} ">
               <img
                 src="{{ $img->ImgURL }}"
                 alt="ảnh sản phẩm {{ $index+1 }}"

@@ -389,7 +389,7 @@
         row.id = `spec-row-${specIndex}`;
         row.innerHTML = `
             <td><input type="text" class="form-control" name="spec[${specIndex}][key]" placeholder="Tên thông số" required></td>
-            <td><input type="text" class="form-control" name="spec[${specIndex}][value]" placeholder="Nội dung thông số" required></td>
+            <td><textarea class="form-control" name="spec[${specIndex}][value]" required></textarea></td>
             <td class="text-center">
                 <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSpecRow(${specIndex})" title="Xóa hàng">
                     <i class="fas fa-trash"></i> Xóa
