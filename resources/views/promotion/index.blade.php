@@ -57,7 +57,7 @@
                                         </td>
                                        <td>
                                         {{-- Hiển thị hình ảnh từ đường dẫn lưu trữ --}}
-                                        <img src="{{ asset('ads/' .$promotion->ImgURL) }}" alt="Hình ảnh khuyến mãi" style="width: 100px; height: auto;">
+                                        <img src="{{ $promotion->ImgURL}}" alt="Hình ảnh khuyến mãi" style="width: 100px; height: auto;">
                                         </td>
                                         <td class="align-middle">
                                             <a href="{{ route('promotion.edit', $promotion->PromotionID) }}" class="btn btn-sm btn-warning text-white font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">

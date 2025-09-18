@@ -42,27 +42,27 @@ class PromotionController extends Controller
             'EndDate' => 'nullable|date|after_or_equal:StartDate',
             'Img' => 'required',
         ]);
-        $generatedImg = 'Img' .time(). '_'
-                            .$request->name. '.'
-                            .$request->Img->extension();
-        $request->Img->move(public_path('ads'),  $generatedImg);
-
-         try {
         
+       
 
-        $promotion = Promotion::create([
-            'Title' => $request-> Title,
-            'Description' => $request-> Description,
-            'DiscountPercent' => $request-> DiscountPercent,
-            'StartDate' => $request-> StartDate,
-            'EndDate' => $request-> EndDate,
-            'ImgURL' => $generatedImg
-        ]);
-        $promotion->save();
+        try {
+        
+            $path = $request->Img->store('ads','public');
+            $generatedImg = Storage::url($path);
 
-        DB::commit();
+            $promotion = Promotion::create([
+                'Title' => $request-> Title,
+                'Description' => $request-> Description,
+                'DiscountPercent' => $request-> DiscountPercent,
+                'StartDate' => $request-> StartDate,
+                'EndDate' => $request-> EndDate,
+                'ImgURL' => $generatedImg
+            ]);
+            $promotion->save();
 
-        return redirect()->route('promotion.index')->with('success', 'Khuyến mãi đã được tạo thành công!');
+            DB::commit();
+
+            return redirect()->route('promotion.index')->with('success', 'Khuyến mãi đã được tạo thành công!');
 
         }catch (\Exception $e){
             DB::rollBack();
@@ -83,62 +83,64 @@ class PromotionController extends Controller
     /**
      * Cập nhật khuyến mãi đã tồn tại.
      */
- public function update(Request $request, Promotion $promotion)
-{
-    // Cập nhật lại validate để phù hợp với việc tải file
-    $request->validate([
-        'Title' => 'required|string|max:100',
-        'Description' => 'nullable|string',
-        'DiscountPercent' => 'nullable|numeric|max:100',
-        'StartDate' => 'nullable|date',
-        'EndDate' => 'nullable|date|after_or_equal:StartDate',
-        'Img' => 'nullable|image|max:5084', // Validate cho file ảnh (5MB)
-    ]);
+    public function update(Request $request, Promotion $promotion)
+    {
+        // Cập nhật lại validate để phù hợp với việc tải file
+        $request->validate([
+            'Title' => 'required|string|max:100',
+            'Description' => 'nullable|string',
+            'DiscountPercent' => 'nullable|numeric|max:100',
+            'StartDate' => 'nullable|date',
+            'EndDate' => 'nullable|date|after_or_equal:StartDate',
+            'Img' => 'nullable|image|max:5084', // Validate cho file ảnh (5MB)
+        ]);
 
-    DB::beginTransaction();
+        DB::beginTransaction();
 
-    // Đối tượng $promotion đã được tự động lấy từ Route Model Binding
-    // Dòng này không cần thiết: $promotion = Promotion::findOrFail($promotion);
 
-    // Chuẩn bị dữ liệu để cập nhật
-    $dataToUpdate = $request->except(['_token', '_method']);
+        // Xử lý tệp tin được tải lên (nếu có)
+        $url = '';
+        if ($request->hasFile('Img')) {
+            // Xóa hình ảnh cũ (nếu tồn tại)
+            if ($promotion->ImgURL) {
+                $path = str_replace('/storage/','',$promotion->ImgURL);
+                Storage::disk('public')->delete($path);
+            }
 
-    // Xử lý tệp tin được tải lên (nếu có)
-    if ($request->hasFile('Img')) {
-        // Xóa hình ảnh cũ (nếu tồn tại)
-        if ($promotion->ImgURL) {
-            Storage::disk('public')->delete($promotion->ImgURL);
+            // Lưu tệp tin mới vào thư mục 'ads' trên đĩa 'public'
+            $path = $request->file('Img')->store('ads', 'public');
+            $url = Storage::url($path);
+        }else{
+            $url = $promotion->ImgURL;
         }
 
-        // Lưu tệp tin mới vào thư mục 'ads' trên đĩa 'public'
-        $path = $request->file('Img')->store('ads', 'public');
-        $dataToUpdate['ImgURL'] = $path;
+        // Cập nhật bản ghi
+        $promotion->update([
+            'Title' => $request-> Title,
+            'Description' => $request-> Description,
+            'DiscountPercent' => $request-> DiscountPercent,
+            'StartDate' => $request-> StartDate,
+            'EndDate' => $request-> EndDate,
+            'ImgURL' => $url
+        ]);
+
+        DB::commit();
+
+        return redirect()->route('promotion.index')->with('success', 'Khuyến mãi đã được cập nhật thành công!');
     }
-
-    // Cập nhật bản ghi
-    $promotion->update($dataToUpdate);
-
-    DB::commit();
-
-    return redirect()->route('promotion.index')->with('success', 'Khuyến mãi đã được cập nhật thành công!');
-}
 
     /**
      * Xóa khuyến mãi.
      */
-    public function destroy(Promotion $promotion)
+    public function destroy($id)
     {
-        // Kiểm tra xem đối tượng promotion có trường ImgURL không
-    if ($promotion->ImgURL) {
-        // Đường dẫn của file ảnh trong thư mục storage/app/public
-        $imagePath = $promotion->ImgURL;
-        
-        // Kiểm tra xem file có tồn tại không
-        if (Storage::disk('public')->exists($imagePath)) {
-            // Xóa file ảnh vật lý
+        $promotion = Promotion::findOrFail($id);
+
+        if ($promotion->ImgURL) {
+            // Đường dẫn của file ảnh trong thư mục storage/app/public
+            $imagePath =str_replace('/storage/','', $promotion->ImgURL);
             Storage::disk('public')->delete($imagePath);
         }
-    }
         $promotion->delete();
 
         return redirect()->route('promotion.index')->with('success', 'Khuyến mãi đã được xóa thành công!');
@@ -149,6 +151,4 @@ class PromotionController extends Controller
         $promotions = Promotion::all();
         return response()->json($promotions);
     }
-
-    
 }
