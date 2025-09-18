@@ -14,13 +14,13 @@
             {{-- 1 --}}
             <div class="d-flex flex-column col-6">
               <strong class="me-2">1. Đào Anh Đức - MSV: 2354800008 - D.12.48.04: </strong>
-              <p> Nhóm trưởng, làm giao diện HomePage, sản phẩm 1 (Iphone 16), Backend</p>
+              <p> Nhóm trưởng, làm giao diện HomePage, sản phẩm 1 (Iphone 16), Quản lý SP</p>
             </div>
 
             {{-- 2 --}}
             <div class="d-flex flex-column col-6">
-              <strong class="me-2">2. Phạm Đình Nam - MSV: 2354800008 - D.12.48.04: </strong>
-              <p> Làm sản phẩm 1 (Iphone 16)</p>
+              <strong class="me-2">2. Phạm Đình Nam - MSV: 2154800053 - D.12.48.04: </strong>
+              <p> Làm sản phẩm 2 (Máy lọc không khí), Viết báo cáo</p>
             </div>
           </div>
           
@@ -29,21 +29,21 @@
           <div class="row">
             {{-- 3 --}}
             <div class="d-flex flex-column col-6">
-              <strong class="me-2">3. Bùi Nguyễn Minh Hiếu - MSV: 2354800008 - D.12.48.04: </strong>
-              <p> Làm sản phẩm 1 (Iphone 16)</p>
+              <strong class="me-2">3. Bùi Nguyễn Minh Hiếu - MSV: 2354800197 - D.12.48.04: </strong>
+              <p> Làm sản phẩm 5 (Tai nghe Airpod), Quản lý đơn hàng</p>
             </div>
 
             {{-- 4 --}}
             <div class="d-flex flex-column col-6">
-              <strong class="me-2">4. Phạm Ngọc Hải - MSV: 2354800008 - D.12.48.04: </strong>
-              <p> Làm sản phẩm 1 (Iphone 16)</p>
+              <strong class="me-2">4. Phạm Ngọc Hải - MSV:2354800210 - D.12.48.04: </strong>
+              <p> Làm sản phẩm 3 (Macbook), Quản lý Ưu đãi</p>
             </div>
           </div>
           
           {{-- 5 --}}
           <div class="d-flex flex-column">
-            <strong class="me-2">5. Nguyễn Tuấn Thành - MSV: 2354800008 - D.12.48.04: </strong>
-            <p> Làm sản phẩm 1 (Iphone 16)</p>
+            <strong class="me-2">5. Nguyễn Tuấn Thành - MSV: 2354800230 - D.12.48.04: </strong>
+            <p> Làm sản phẩm 1 (Tivi Samsung), Viết báo cáo</p>
           </div>
         </div>
       </div>

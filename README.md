@@ -19,32 +19,24 @@ git clone <repository-url>
 cd <project-name>
 ```
 
-### Bước 2: Cài Đặt Dependencies
+Nếu bạn đã có bản mềm của App rồi thì không phải thực hiện các bước này.
 
-#### Backend Dependencies
-
-```bash
-composer install
-```
-
-> 💡 **Lưu ý:** Nếu không có file `composer.lock`, hãy chạy:
-
-```bash
-composer update
-```
-
-#### Frontend Dependencies
-
-```bash
-npm install
-```
-
-### Bước 3: Cấu Hình Environment
+### Bước 2: Cấu Hình Environment
 
 #### Tạo file `.env`
 
 ```bash
 cp .env.example .env
+```
+
+Hoặc bạn có thể copy file .env.example sau đó xóa đuôi .example đi là được
+
+#### Tạo Database
+
+Tạo một database mới trong MySQL (database phải trống):
+
+```sql
+CREATE DATABASE your_database_name;
 ```
 
 #### Cấu hình Database
@@ -60,21 +52,35 @@ DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
 
+### Bước 3: Cài Đặt Dependencies
+
+#### Backend Dependencies
+
+```bash
+composer install
+```
+
+> 💡 **Lưu ý:** Nếu không có file `composer.lock`, hãy chạy:
+
+```bash
+composer update
+```
+
 #### Tạo Application Key
 
 ```bash
 php artisan key:generate
 ```
 
+#### Frontend Dependencies
+
+```bash
+npm install
+```
+
 ### Bước 4: Thiết Lập Database
 
-#### Tạo Database
 
-Tạo một database mới trong MySQL (database phải trống):
-
-```sql
-CREATE DATABASE your_database_name;
-```
 
 #### Chạy Migration
 
@@ -147,12 +153,9 @@ php artisan migrate
 # Rollback migrations
 php artisan migrate:rollback
 
-# Reset database và chạy lại migrations + seeders
-php artisan migrate:fresh --seed
-
-# Tạo cache cho hiệu suất tốt hơn
-php artisan config:cache
-php artisan route:cache
+# Kết nối storage
+```bash
+php artisan storage:link
 ```
 
 ### Frontend
@@ -164,8 +167,7 @@ npm run dev
 # Production build
 npm run build
 
-# Watch for changes
-npm run watch
+
 ```
 
 ## 🐛 Troubleshooting

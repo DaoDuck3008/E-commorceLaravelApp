@@ -128,18 +128,6 @@
     let html = '';
     
     orders.forEach((order, index) => {
-        if(index > 4){
-          html += `
-            <div class="d-flex justify-content-center">
-              <a class="btn btn-danger" href="{{ route('order.history') }}">Xem thêm</a>
-            </div>
-          `;
-
-          container.innerHTML = html;
-
-          return;
-        }
-
         let statusBadge = '';
         switch(order.STATUS) {
             case 'Pending':
