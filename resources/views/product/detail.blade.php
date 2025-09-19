@@ -476,121 +476,66 @@
         </style>
       <body>
         <button id="openModal">Viết đánh giá</button>
-        <div id="reviewModal" class="modal">
-          <div class="modal-content">
 
-            <div class="modal-header">
-              <h2 >Đánh giá & nhận xét</h2>
-              <span class="close" id="closeModal">&times;</span>
-            </div>
-            
-            <div>
-              <label><b>Đánh giá chung:</b></label>
-              <div class="stars" id="stars">
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; font-size:13px; color:#777; margin-top:4px;">
-                <span>Rất tệ</span>
-                <span>Tuyệt vời</span>
-              </div>
-            </div>
+<div id="reviewModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Đánh giá & nhận xét</h2>
+      <span class="close" id="closeModal">&times;</span>
+    </div>
 
-          
-            <div style="margin-top:20px;">
-              <div class="rating-row">
-                <span>Hiệu năng</span>
-                <div class="stars sub-stars">
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                </div>
-              </div>
-              <div class="rating-row">
-                <span>Thời lượng pin</span>
-                <div class="stars sub-stars">
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                </div>
-              </div>
-              <div class="rating-row">
-                <span>Màn hình</span>
-                <div class="stars sub-stars">
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                  <span class="sub-star">★</span>
-                </div>
-              </div>
-            </div>
+    <form method="POST" action="{{ route('reviews.store') }}">
+      @csrf
+      <input type="hidden" name="ProductID" value="{{ $product->ProductID }}">
+      <input type="hidden" name="Rating" id="ratingInput">
 
-            {{-- Nhận xét --> --}}
-            <div style="margin-top:20px;">
-              <textarea placeholder="Xin mời chia sẻ cảm nhận về sản phẩm (tối thiểu 15 ký tự)..."></textarea>
-            </div>
+      <label><b>Đánh giá chung:</b></label>
+      <div class="stars" id="stars" style="font-size:30px; cursor:pointer;">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
 
-          
-            <button class="btn-submit">GỬI ĐÁNH GIÁ</button>
-          </div>
-        </div>
-        <script>
-        const submitBtn = document.querySelector(".btn-submit");
+      <div style="display:flex; justify-content:space-between; font-size:13px; color:#777; margin-top:4px;">
+        <span>Rất tệ</span>
+        <span>Tuyệt vời</span>
+      </div>
 
-        submitBtn.addEventListener("click", () => {
-          const reviewText = document.querySelector("textarea").value.trim();
+      <div style="margin-top:20px;">
+        <textarea name="comment" placeholder="Xin mời chia sẻ cảm nhận về sản phẩm (tối thiểu 15 ký tự)..." required></textarea>
+      </div>
 
-          if (reviewText.length < 15) {
-            alert("Vui lòng nhập tối thiểu 15 ký tự cho nhận xét.");
-            return;
-          }
-          alert("Đánh giá thành công! Cảm ơn bạn đã gửi đánh giá.");
+      <button type="submit" class="btn-submit">GỬI ĐÁNH GIÁ</button>
+    </form>
+  </div>
+</div>
 
-          document.querySelector("textarea").value = "";
-          document.querySelectorAll("#stars .star").forEach(star => star.style.color = "#ccc");
-          document.querySelectorAll(".sub-stars .sub-star").forEach(star => star.style.color = "#ccc");
-          modal.style.display = "none";
-        });
-      </script>
-        <script>
-        
-          const modal = document.getElementById("reviewModal");
-          const openBtn = document.getElementById("openModal");
-          const closeBtn = document.getElementById("closeModal");
+<script>
+  const modal = document.getElementById("reviewModal");
+  const openBtn = document.getElementById("openModal");
+  const closeBtn = document.getElementById("closeModal");
 
-          openBtn.onclick = () => modal.style.display = "flex";
-          closeBtn.onclick = () => modal.style.display = "none";
-          window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
+  // mở modal
+  openBtn.onclick = () => modal.style.display = "flex";
+  closeBtn.onclick = () => modal.style.display = "none";
+  window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
 
-        
-          const stars = document.querySelectorAll("#stars .star");
-          stars.forEach((star, index) => {
-            star.addEventListener("click", () => {
-              stars.forEach((s, i) => {
-                s.style.color = i <= index ? "#fbbf24" : "#ccc";
-              });
-            });
-          });
-          const groups = document.querySelectorAll(".sub-stars");
-          groups.forEach(group => {
-            const subs = group.querySelectorAll(".sub-star");
-            subs.forEach((star, index) => {
-              star.addEventListener("click", () => {
-                subs.forEach((s, i) => {
-                  s.style.color = i <= index ? "#fbbf24" : "#ccc";
-                });
-              });
-            });
-          });
-        </script>
+  // xử lý rating
+  const stars = document.querySelectorAll("#stars .star");
+  const ratingInput = document.getElementById("ratingInput"); // đúng id của hidden input
+
+  stars.forEach((star, index) => {
+    star.addEventListener("click", () => {
+      stars.forEach((s, i) => {
+        s.style.color = i <= index ? "#fbbf24" : "#ccc";
+      });
+      ratingInput.value = index + 1; // lưu giá trị rating vào input hidden
+    });
+  });
+</script>
+
       </body>
 
         </div>
@@ -717,138 +662,300 @@
         </div>
       </div>
 
-      <!-- Các bình luận -->
-      <div class="rating-container mt-5 m-3">
-        <!-- Comment 1 -->
-        <div class="row mt-2">
-          <div class="col-3 d-flex">
-            <div class="avatar ms-3 me-2">
-              <img
-                src="https://cdn.kwork.com/files/portfolio/t3/24/a5bf8465becd2274bd38894122c7020e96115673-1711803733.jpg"
-              />
-            </div>
-            <strong>Nguyễn Tấn Tài</strong>
-          </div>
-          <div class="col-9">
-            <div class="d-flex gap-1 my-1 mb-4">
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i>
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i>
-            </div>
-            <div class="my-2">
-              airpods 4 vừa mua ở TGDD hơn 1 tháng shop thu lại được nhiêu nhỉ
-            </div>
-            <div class="d-flex my-1">
-              <i
-                class="fa-regular fa-clock me-1 mt-1"
-                style="color: #a1a1bd"
-              ></i
-              >Đánh giá đã đăng vào 6 ngày trước
-            </div>
-          </div>
-        </div>
-        <hr />
+      <!--Viết bình luận-->
+        <style>
+          star-rating {
+        direction: rtl; 
+        display: inline-flex;
+      }
+      .star-rating input {
+        display: none;
+      }
+      .star-rating label {
+        font-size: 2rem;
+        color: #ccc;
+        cursor: pointer;
+        padding: 0 3px;
+      }
+      .star-rating input:checked ~ label,
+      .star-rating label:hover,
+      .star-rating label:hover ~ label {
+        color: #ffc107; 
+      }
+          .comment-box {
+        border-radius: 15px;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+      }
+      .rounded-input {
+        border-radius: 10px !important;
+      }
+      .btn-submit {
+        border-radius: 50px !important;
+        padding: 10px 25px;
+        font-weight: 600;
+        background: linear-gradient(45deg, #ff4b2b, #ff416c);
+        border: none;
+        color: #fff;
+        transition: all 0.3s ease-in-out;
+      }
+      .btn-submit:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+      }
+      .rating {
+        direction: rtl;
+        unicode-bidi: bidi-override;
+        display: inline-flex;
+      }
+      .rating input { display: none; }
+      .rating label {
+        font-size: 1.8rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.2s;
+      }
+      .rating input:checked ~ label,
+      .rating label:hover,
+      .rating label:hover ~ label {
+        color: #ffc107;
+        transform: scale(1.2);
+      }
+      .comment-item {
+        border-radius: 15px;
+        padding: 15px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        margin-bottom: 15px;
+      }
 
-        <!-- Comment 2 -->
-        <div class="row mt-2">
-          <div class="col-3 d-flex">
-            <div class="avatar ms-3 me-2">
-              <img
-                src="https://cdn.kwork.com/files/portfolio/t3/24/a5bf8465becd2274bd38894122c7020e96115673-1711803733.jpg"
-              />
-            </div>
-            <strong>Bùi Nguyễn Minh hiếu</strong>
-          </div>
-          <div class="col-9">
-            <div class="d-flex gap-1 my-1 mb-4">
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i>
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i>
-            </div>
-            <div class="my-2">đã mua hàng, chất lượng tốt</div>
-            <div class="d-flex my-1">
-              <i
-                class="fa-regular fa-clock me-1 mt-1"
-                style="color: #a1a1bd"
-              ></i
-              >Đánh giá đã đăng vào 6 ngày trước
-            </div>
-          </div>
-        </div>
-        <hr />
+        </style>
+        <div class="container my-4">
+            
+          {{-- Form gửi bình luận (nếu đã login) --}}
+          @if(auth()->check())
+              <div class="comment-box">
+                  <h5 class="mb-3 fw-bold">Viết bình luận</h5>
+                  <form method="POST" action="{{ route('reviews.store') }}">
+                      @csrf
+                      <div class="mb-3">
+          <label class="form-label fw-bold">Đánh giá:</label>
+          <div class="star-rating">
+              <input type="hidden" name = ProductID value = "{{ $product-> ProductID }}" required>
+              <input type="radio" id="star5" name="rating" value="5" required>
+              <label for="star5">★</label>
 
-        <!-- Comment 3 -->
-        <div class="row mt-2">
-          <div class="col-3 d-flex">
-            <div class="avatar ms-3 me-2">
-              <img
-                src="https://cdn.kwork.com/files/portfolio/t3/24/a5bf8465becd2274bd38894122c7020e96115673-1711803733.jpg"
-              />
-            </div>
-            <strong>Đào Anh Đức</strong>
-          </div>
-          <div class="col-9">
-            <div class="d-flex gap-1 my-1 mb-4">
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i>
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i>
-            </div>
-            <div class="my-2">Có cái Iphone nhìn sang hẳn</div>
-            <div class="d-flex my-1">
-              <i
-                class="fa-regular fa-clock me-1 mt-1"
-                style="color: #a1a1bd"
-              ></i
-              >Đánh giá đã đăng vào 6 ngày trước
-            </div>
-          </div>
-        </div>
-        <hr />
+              <input type="radio" id="star4" name="rating" value="4">
+              <label for="star4">★</label>
 
-        <!-- Comment 4 -->
-        <div class="row mt-2">
-          <div class="col-3 d-flex">
-            <div class="avatar ms-3 me-2">
-              <img
-                src="https://cdn.kwork.com/files/portfolio/t3/24/a5bf8465becd2274bd38894122c7020e96115673-1711803733.jpg"
-              />
-            </div>
-            <strong>Nguyễn Tuấn Thành</strong>
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3">★</label>
+
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2">★</label>
+
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1">★</label>
           </div>
-          <div class="col-9">
-            <div class="d-flex gap-1 my-1 mb-4">
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i
-              ><i class="fa-solid fa-star" style="color: #ffd43b"></i>
-              <i class="fa-solid fa-star" style="color: #ffd43b"></i>
-            </div>
-            <div class="my-2">
-              iPhone 16 Pro Max sở hữu chipset A18 Pro mạnh mẽ giúp xử lý
-              nhanh mọi tác vụ, camera 48 MP zoom quang 5x cho ảnh nét, màn
-              hình 6.9 inch sống động. Pin dung lượng cao của máy hỗ trợ phát
-              video tới 33 tiếng, đáp ứng nhu cầu giải trí liên tục suốt ngày
-              dài. Cùng với đó là thiết kế khung Titanium bền nhẹ, mang lại
-              cảm giác sang trọng và chắc chắn khi cầm.
-            </div>
-            <div class="d-flex my-1">
-              <i
-                class="fa-regular fa-clock me-1 mt-1"
-                style="color: #a1a1bd"
-              ></i
-              >Đánh giá đã đăng vào 6 ngày trước
-            </div>
-          </div>
-        </div>
-        <hr />
+                      <div class="mb-3">
+                          <textarea name="COMMENT" rows="3" class="form-control rounded-input" placeholder="Viết bình luận..." required></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-submit">
+                          <i class="bi bi-send-fill me-1"></i> Gửi bình luận
+                      </button>
+                  </form>
+              </div>
+          @else
+
+            <div class="login-notice-wrapper">
+          <p class="login-notice">
+              <a href="{{ route('login') }}">Bạn cần đăng nhập để bình luận.</a> 
+          </p>
       </div>
+
+        <style>
+        .login-notice-wrapper {
+            display: flex;            /* bật flex */
+            justify-content: center;  /* căn giữa ngang */
+            margin: 20px 0;           /* khoảng cách trên/dưới */
+        }
+
+        .login-notice {
+            background-color: #ffe5e5;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-notice a {
+            color: #d32f2f;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed #d32f2f;
+            transition: all 0.3s ease;
+        }
+
+        .login-notice:hover {
+            background-color: #ffd6d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3);
+        }
+
+        .login-notice a:hover {
+            color: #b71c1c;
+            border-bottom: 1px solid #b71c1c;
+        }
+        </style>
+
+@endif
+
+</div>
+
+<hr>
+
+
+<!-- Danh sách bình luận -->
+<div class="container my-4">
+    <!-- Khung chung -->
+    <div class="border rounded p-4 bg-white shadow-sm">
+
+        <!-- Lọc đánh giá -->
+        <div class="mb-4">
+            <h5 class="fw-bold mb-3">Lọc đánh giá theo</h5>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-sm btn-outline-secondary rounded-pill active">Tất cả</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">Có hình ảnh</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">Đã mua hàng</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">5 sao</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">4 sao</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">3 sao</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">2 sao</button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">1 sao</button>
+            </div>
+        </div>
+
+        <!-- Danh sách bình luận -->
+        @forelse($product->reviews as $review)
+            <div class="d-flex border-bottom pb-3 mb-3">
+                <!-- Avatar -->
+                <div class="me-3">
+                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white fw-bold" style="width:50px; height:50px;">
+                        {{ strtoupper(substr($review->user->FullName ?? 'Ẩn', 0, 1)) }}
+                    </div>
+                </div>
+
+                <!-- Nội dung -->
+                <div class="flex-grow-1">
+                    <!-- Username -->
+                    <strong class="d-block">{{ $review->user->FullName ?? 'Người dùng đã xóa' }}</strong>
+
+                    <!-- Sao + tiêu đề -->
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="me-2">
+                            @for($i=1; $i<=5; $i++)
+                                <i class="bi bi-star-fill" style="color: {{ $i <= ($review->Rating ?? 0) ? '#ffc107' : '#e4e5e9' }}"></i>
+                            @endfor
+                        </div>
+                        <span class="fw-semibold text-success">Tuyệt vời</span>
+                    </div>
+
+                    <!-- Nội dung bình luận -->
+                    <p class="mb-2">{{ $review->COMMENT }}</p>
+
+                    <!-- Thời gian + nút -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted d-flex align-items-center">
+                            <i class="bi bi-clock me-1"></i>
+                            {{ $review->CreatedAt ? $review->CreatedAt->diffForHumans() : '' }}
+                        </small>
+
+                            @if(auth()->check() && (auth()->user()->UserID == $review->user->UserID || auth()->user()->Role === 'Admin'))
+                                <div class="d-flex gap-2">
+                                    @if(auth()->user()->UserID == $review->user->UserID)
+                                        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#editReview{{ $review->ReviewID }}">
+                                            Cập nhật
+                                        </button>
+                                    @endif
+
+                                    <!-- Nút xóa -->
+                                    <form method="POST" action="{{ route('reviews.destroy', $review->ReviewID) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
+
+
+                    <!-- Form cập nhật -->
+                    <div class="collapse mt-3" id="editReview{{ $review->ReviewID }}">
+                        <form method="post" action="{{ route('reviews.update', $review->ReviewID) }}">
+                            @csrf
+                            @method('PUT')
+          
+                          <style>
+                                .star-rating {
+                                    direction: rtl; /* để chọn từ phải qua trái */
+                                    display: inline-flex;
+                                    font-size: 1.5rem;
+                                }
+                                .star-rating input {
+                                    display: none; /* ẩn radio */
+                                }
+                                .star-rating label {
+                                    color: #e4e5e9;
+                                    cursor: pointer;
+                                    transition: color 0.2s;
+                                }
+                                .star-rating input:checked ~ label,
+                                .star-rating label:hover,
+                                .star-rating label:hover ~ label {
+                                    color: #ffc107; /* màu vàng cho sao được chọn */
+                                }
+                            </style>
+                            <!-- Chỉnh sửa sao đẹp -->
+                                <div class="mb-2">
+                                    <label class="form-label">Đánh giá sao:</label>
+                                    <div class="star-rating">
+                                        @for($i = 5; $i >= 1; $i--)
+                                            <input type="radio" id="edit-star{{ $i }}-{{ $review->ReviewID }}" 
+                                                  name="rating" value="{{ $i }}" 
+                                                  @if($review->Rating == $i) checked @endif>
+                                            <label for="edit-star{{ $i }}-{{ $review->ReviewID }}">★</label>
+                                        @endfor
+                                    </div>
+                                </div>
+
+                            <textarea name="comment" class="form-control mb-2">{{ $review->COMMENT }}</textarea>
+                            <button type="submit" class="btn btn-sm btn-success">Lưu thay đổi</button>
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="collapse" data-bs-target="#editReview{{ $review->ReviewID }}">
+                                Hủy
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <p class="text-muted">Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</p>
+        @endforelse
     </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+
+
+
+
+      
 </main>
 
 <script>

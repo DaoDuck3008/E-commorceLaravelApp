@@ -31,9 +31,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/overall/{userID}',[UserController::class,'overall'])->name('user.overall');
     Route::get('/user/edit/{userID}',[UserController::class,'editCustomer'])->name('user.edit');
     Route::put('/user/{userID}',[UserController::class,'update']);
-    Route::middleware('auth')->group(function () {
-    Route::post('/product/{id}/review', [ReviewController::class, 'store'])->name('product.review');
-});
+        
+    
+
+
+    Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])
+    ->name('reviews.store')
+    ->middleware('auth'); // chỉ người đăng nhập mới đánh giá
+
+
+        //Route đánh giá
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::put('/reviews/update/{id}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::post('/review/{id}', [ReviewController::class, 'store'])->name('product.review');
 
     // Route giỏ hàng
     Route::get('/cart',[CartController::class,'index'])->name('cart.index');
@@ -62,3 +73,7 @@ Route::middleware(['role:Admin'])->prefix('/admin')->group(function () {
     Route::put('/user/{UserID}',[UserController::class,'update'])->name('admin.user.update');
     Route::delete('/user/{UserID}',[UserController::class,'destroy'])->name('admin.user.destroy');
 });
+
+
+
+

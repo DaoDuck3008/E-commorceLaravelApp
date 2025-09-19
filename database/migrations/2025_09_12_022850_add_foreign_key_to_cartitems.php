@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('cartitems', function (Blueprint $table) {
             //
-            $table->decimal('AvgRate',10,2);
-            $table->integer('CommentCount');
+            $table->foreign('VersionID')->references('VersionID')->on('productversions');
+            $table->foreign('ColorID')->references('ColorID')->on('productcolors');
         });
     }
 
@@ -27,10 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('cartitems', function (Blueprint $table) {
             //
-            $table->dropColumn('AvgRate');
-            $table->dropColumn('CommentCount');
+            $table->dropForeign('VersionID');
+            $table->dropForeign('ColorID');
         });
     }
 };

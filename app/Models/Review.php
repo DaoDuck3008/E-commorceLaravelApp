@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Review extends Model
 {
+    
+    const CREATED_AT = 'CreatedAt'; // Laravel sẽ dùng cột CreateAt
+    const UPDATED_AT = null;       
     /**
      * The primary key for the model.
      * 
@@ -45,4 +48,11 @@ class Review extends Model
     {
         return $this->belongsTo('App\Models\Product', 'ProductID', 'ProductID');
     }
+    
 }
+
+
+
+
+
+   

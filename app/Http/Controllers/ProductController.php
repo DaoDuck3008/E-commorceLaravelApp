@@ -37,7 +37,7 @@ class ProductController extends Controller
     }
 
     public function show($id){
-        $product = Product::with(['productImgs', 'productSpecifications', 'productVersions', 'productColors','category','brand'])
+        $product = Product::with(['productImgs', 'productSpecifications', 'productVersions', 'productColors','category','brand','reviews'])
                   ->find($id);
 
         // dd($product);          
