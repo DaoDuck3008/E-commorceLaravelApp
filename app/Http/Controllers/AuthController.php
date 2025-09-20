@@ -56,8 +56,7 @@ class AuthController extends Controller
             if (Auth::attempt(['Email' => $credentials['email'], 'password' => $credentials['password']], $remember)) {
                 $request->session()->regenerate();
                 
-                $products = Product::all();
-                return view('product.index',['products'=> $products])->with('success', 'Đăng nhâp thành công!');
+                return redirect()->route('home')->with('success', 'Đăng nhâp thành công!');
             } else {
                 return back()->with('error', 'Email hoặc mật khẩu không đúng');
             }

@@ -18,9 +18,7 @@ class ProductController extends Controller
 {
     //
     public function index(){
-        $products = Product::all();
-
-        return view('product.index',['products' => $products]);
+        return redirect()->route('home');
     }
 
     public function dashboard(){

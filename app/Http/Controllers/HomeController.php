@@ -10,9 +10,14 @@ class HomeController extends Controller
 {
     //
     public function index (){
-        $products = Product::all();
-        $categories = Category::orderBy('Priority', 'asc')->get();
+        $products = Product::paginate(20);
 
         return view('product.index',['products' => $products]);
+    }
+
+    public function getRandomProduct(){
+        $randomProducts =Product::inRandomOrder()->limit(5)->get();
+
+        return response()->json($randomProducts);
     }
 }

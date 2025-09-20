@@ -151,7 +151,7 @@ return new class extends Migration
             $table->integer('OrderID');
             $table->integer('ProductID');
             $table->integer('Quantity');
-            $table->decimal('Price', 10, 2);
+            $table->decimal('Price', 12, 2);
             $table->unsignedInteger('VersionID')->nullable();
             $table->unsignedInteger('ColorID')->nullable();
             
@@ -166,7 +166,7 @@ return new class extends Migration
             $table->integer('PaymentID')->autoIncrement();
             $table->integer('OrderID');
             $table->timestamp('PaymentDate')->useCurrent();
-            $table->decimal('Amount', 10, 2);
+            $table->decimal('Amount', 12, 2);
             $table->enum('PaymentMethod', ['CreditCard', 'COD', 'BankTransfer', 'E-Wallet']);
             $table->string('STATUS', 50)->nullable();
             

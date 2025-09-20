@@ -5,33 +5,16 @@
     <div class="products-section mt-3">
         <!-- Tiêu đề -->
         <div class="d-flex flex-column flex-md-row">
-          <h4 class="me-auto">CÁC SẢN PHẨM NỔI BẬT</h4>
+          <h4 class="me-auto">CÁC SẢN PHẨM ĐIỆN THOẠI</h4>
           <div class="d-flex flex-nowrap overflow-auto gap-2">
-            <button class="btn" style="background-color: #f3f4f6">Apple</button>
-            <button class="btn" style="background-color: #f3f4f6">
-              Samsung
-            </button>
-            <button class="btn" style="background-color: #f3f4f6">Asus</button>
-
-            <button class="btn" style="background-color: #f3f4f6">
-              Xiaomi
-            </button>
-            <button class="btn" style="background-color: #f3f4f6">
-              Lenovo
-            </button>
-            <button class="btn" style="background-color: #f3f4f6">Oppo</button>
-            <button class="btn" style="background-color: #f3f4f6">Nokia</button>
-            <button class="btn" style="background-color: #f3f4f6">Vivo</button>
-            <button class="btn" style="background-color: #f3f4f6">
-              Microsoft
-            </button>
-            <button class="btn" style="background-color: #f3f4f6">Alien</button>
+            <button class="btn btn-dark">Xem thêm</button>
+            
           </div>
         </div>
 
         <!-- Các sản phẩm -->
         <div
-          class="d-flex flex-wrap mt-3 justify-content-left"
+          class="d-flex flex-wrap mt-3 justify-content-center"
         >
           @foreach ( $products as $product )
           <a
@@ -74,4 +57,34 @@
           @endforeach
       </div>
     </div>
+
+    {{-- pagination --}}
+    @if ($products->hasPages())
+      <div class="d-flex justify-content-center mt-3">
+          <nav aria-label="Page navigation">
+              <ul class="pagination">
+                  {{-- Previous Page Link --}}
+                  <li class="page-item {{ $products->onFirstPage() ? 'disabled' : '' }}">
+                      <a class="page-link" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                      </a>
+                  </li>
+
+                  {{-- Pagination Elements --}}
+                  @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                      <li class="page-item {{ $page == $products->currentPage() ? 'active' : '' }}">
+                          <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                      </li>
+                  @endforeach
+
+                  {{-- Next Page Link --}}
+                  <li class="page-item {{ $products->hasMorePages() ? '' : 'disabled' }}">
+                      <a class="page-link" href="{{ $products->nextPageUrl() }}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                      </a>
+                  </li>
+              </ul>
+          </nav>
+      </div>
+    @endif
 @endsection

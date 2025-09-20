@@ -24,6 +24,7 @@ Route::post('/login', [AuthController::class,'login']);
 
 Route::get('/find-all-categories', [CategoryController::class,'getAllCategories']);
 Route::get('/brands-by-category/{categoryID}', [BrandController::class,'getByCategory']);
+Route::get('/get-random-products',[HomeController::class,'getRandomProduct']);
 
 // Chỉ khi đăng nhập mới có thể vào
 Route::middleware('auth')->group(function () {
