@@ -113,7 +113,7 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a href="user/overall/{{ auth()->user()->UserID }}" class="dropdown-item">
+                <a href="{{ route('user.overall', auth()->user()->UserID) }}" class="dropdown-item">
                   Thông tin người dùng
                 </a>
               </li>

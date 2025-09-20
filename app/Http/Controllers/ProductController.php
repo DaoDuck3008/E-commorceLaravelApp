@@ -39,8 +39,7 @@ class ProductController extends Controller
     public function show($id){
         $product = Product::with(['productImgs', 'productSpecifications', 'productVersions', 'productColors','category','brand'])
                   ->find($id);
-
-        // dd($product);          
+       
         return view('product.detail', ['product' => $product]);
     }
 
@@ -387,12 +386,6 @@ class ProductController extends Controller
         if($request->has('input')&& !empty($request->input)){
             $keyword = $request->input;
             $query->where('ProductName','like',"%{$keyword}%");
-                // ->orWhereHas('category', function($q) use ($keyword) {
-                //     $q->where('CategoryName','like',"%{$keyword}%");
-                // })
-                // ->orWhereHas('brand', function($q) use ($keyword) {
-                //     $q->where('BrandName','like',"%{$keyword}%");
-                // });
         }
 
         if($request->has('category') && !empty($request->category)){

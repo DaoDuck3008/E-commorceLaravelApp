@@ -31,7 +31,6 @@ class CartController extends Controller
     }
 
     public function addItem(Request $request){
-        // dd($request->versionID);
         try{
             //Kiểm tra xem người dùng đã đăng nhập hay chưa
             if(!auth()){
@@ -48,36 +47,10 @@ class CartController extends Controller
                 'quantity' => 'nullable|integer|min:1',
             ]);
 
-            // Kiểm tra product tồn tại
-            $product = Product::find($request->productID);
-            if (!$product) {
-                return redirect()->back()->with('error', 'Sản phẩm không tồn tại!');
-            }
-
             //Kiểm tra số lượng tồn kho của sản phẩm. còn thì mới cho mua
             $product = Product::find($request->productID);
             if($product->StockQuantity <1){
                 return redirect()->back()->with('warning','Sản phẩm đã hết hàng!');
-            }
-
-            //Kiểm tra phiên bản (nếu có)
-            if($request->versionID){
-                $version = Productversion::where('VersionID', $request->versionID)
-                            ->where('ProductID', $request->productID)
-                            ->first();
-                if(!$version){
-                    return redirect()->back()->with('error','Phiên bản sản phẩm không hợp lệ!');
-                }
-            }
-
-            //Kiểm tra màu sắc (nếu có)
-            if($request->colorID){
-                $color = Productcolor::where('ColorID', $request->colorID)
-                            ->where('ProductID', $request->productID)
-                            ->first();
-                if(!$color){
-                    return redirect()->back()->with('error','Màu sắc sản phẩm không hợp lệ');
-                }
             }
 
             //TÌm hoặc tạo giỏ hàng
@@ -108,8 +81,6 @@ class CartController extends Controller
 
             $cartItem = $cartItemQuery->first();
             
-            // $message = '';
-            // dd($cartItem);
             if($cartItem){
                 //Nếu đã có thì tăng số lượng sản phẩm đó lên
                 $cartItem->increment('Quantity');

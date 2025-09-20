@@ -66,7 +66,8 @@
                 .then(data => {
                     let html = "<ul class='list-unstyled mb-0 d-flex flex-column text-start'>";
                     data.forEach(brand => {
-                        html += `<a class="py-1 btn text-start" href="{{ route('products.searchCustomer')}}?brand=${brand.BrandID}&category=${categoryId}">${brand.BrandName}</a>`;
+                        html += `<a class="py-1 btn text-start" 
+                        href="{{ route('products.searchCustomer')}}?brand=${brand.BrandID}&category=${categoryId}">${brand.BrandName}</a>`;
                     });
                     html += "</ul>";
                     

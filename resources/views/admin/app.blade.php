@@ -84,7 +84,7 @@
         <a href="/admin/brand" class="{{ request()->is('admin/brand*') ? 'active' : '' }}"><i class="fa-solid fa-copyright me-2"></i> Quản lý thương hiệu </a>
         <a href="/admin/user" class="{{ request()->is('admin/user*') ? 'active' : '' }}"><i class="fa-solid fa-users me-2"></i> Quản lý người dùng</a>
         <a href="{{ route('admin.order.dashboard') }}" class="{{ request()->is('admin/order*') ? 'active' : '' }}"><i class="fa-solid fa-truck-moving me-2"></i> Quản lý đơn hàng</a>
-        <a href="/admin/promotion" class="{{ request()->is('admin/promotion*') ? 'active' : '' }}"> Quản lý khuyến mãi</a>
+        <a href="/admin/promotion" class="{{ request()->is('admin/promotion*') ? 'active' : '' }}"><i class="fa-solid fa-ticket me-2"></i> Quản lý khuyến mãi</a>
 
       </div>
       

@@ -21,7 +21,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'phone' => 'required|string|min:10',
+            'phone' => 'required|string|min:10|max:11',
             'password' => 'required|min:6|confirmed',
         ]);
 
@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('products.index')->with('success', 'Đăng ký tài khoản thành công!');
+        return redirect()->route('home')->with('success', 'Đăng ký tài khoản thành công!');
 
     }
 

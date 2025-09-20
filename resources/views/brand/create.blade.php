@@ -8,7 +8,7 @@
     <div class="row g-3 mt-1">
         <div class="col-md-12" >
             <div class="card-custom">
-                <h3 class="mb-4 text-danger">Thêm mới danh mục</h3>
+                <h3 class="mb-4 text-danger">Thêm mới Thương hiệu</h3>
                 <form action="/admin/brand" method="post">
                 @csrf
                     <!-- Tên danh mục -->
