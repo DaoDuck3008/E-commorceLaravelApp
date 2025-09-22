@@ -419,7 +419,7 @@ class ProductController extends Controller
             }
         }
 
-        $products = $query->get();
+        $products = $query->paginate(30);
         $categories = Category::all();
 
         return view('product.catalogSearch', ['products' => $products,'categories' => $categories]);
