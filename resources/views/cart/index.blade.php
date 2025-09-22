@@ -13,6 +13,19 @@
             </div>
         </div>
 
+        @if(count($cartitems) == 0)
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fa-solid fa-cart-shopping text-secondary" style="font-size: 5rem;"></i>
+                </div>
+                <h4 class="text-secondary mb-3">Chưa có sản phẩm nào</h4>
+                <p class="text-muted mb-4">Hãy khám phá các sản phẩm và thêm vào giỏ hàng của bạn</p>
+                <a href="{{ route('products.index') }}" class="btn btn-danger rounded-pill px-4">
+                    <i class="fa-solid fa-bag-shopping me-2"></i>Mua sắm ngay
+                </a>
+            </div>
+        @endif
+
         <!-- Cart Items -->
         @foreach ($cartitems as $index => $item)
         @php

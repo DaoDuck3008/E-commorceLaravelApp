@@ -41,7 +41,7 @@
                   {{ $product->ProductName }}
               </h6>
               <div class="d-flex align-items-baseline gap-2">
-                  <span class="text-danger fw-bold fs-6">{{ $product->Price }}đ</span>
+                  <span class="text-danger fw-bold fs-6">{{ number_format($product->Price, 0, ',','.') }}đ</span>
                   <small class="text-muted text-decoration-line-through"
                   >34.990.000đ</small
                   >

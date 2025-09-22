@@ -17,17 +17,15 @@ class CartController extends Controller
                         ->where('Completed', false)
                         ->first();
         
-        if($cart){
-            $cartItems = CartItem::where('CartID', $cart->CartID)
-                                    ->with(['product','version','color'])
-                                    ->get();
-            
-            return view('cart.index',['cart' => $cart, 'cartitems' => $cartItems]);
-        }else{
-            return redirect()->back()->with('error','Không tìm thấy giỏ hàng của người dùng');
+        if(!$cart){
+            return view('cart.index',['cartitems' => []]);
         }
 
-        return view('cart.index',['cartItems' => $cartItems]);
+        $cartItems = CartItem::where('CartID', $cart->CartID)
+                                    ->with(['product','version','color'])
+                                    ->get();
+
+        return view('cart.index',['cartitems' => $cartItems]);
     }
 
     public function addItem(Request $request){
