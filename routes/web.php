@@ -41,9 +41,11 @@ Route::middleware('auth')->group(function () {
     route::post('/cart/decrease_quantity/{cartitemID}',[CartController::class,'decreaseQuantity'])->name('cart.decrease');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     // Route đơn hàng
-    Route::get('/checkout', [OrderController::class, 'index'])->name('checkout');
-    Route::post('/checkout', [OrderController::class, 'processCheckout'])->name('processCheckout');
-    Route::get('/order/confirmation/{orderId}', [OrderController::class,'confirmation'])->name('order.confirmation');
+    Route::middleware('prevent-back-history')->group( function (){
+        Route::get('/checkout', [OrderController::class, 'index'])->name('checkout');
+        Route::post('/checkout', [OrderController::class, 'processCheckout'])->name('processCheckout');
+        Route::get('/order/confirmation/{orderId}', [OrderController::class,'confirmation'])->name('order.confirmation');
+    });
     Route::get('/order/history', [OrderController::class,'history'])->name('order.history');
     Route::get('/api/order/history', [OrderController::class,'historyAPI'])->name('api.order.history');
     Route::get('/order/{orderId}', [OrderController::class,'show'])->name('order.show');
@@ -51,7 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/buy_now',[OrderController::class,'buyNow'])->name('order.buyNow');
     Route::post('/checkout_buy_now', [OrderController::class, 'processCheckoutBuyNow'])->name('processCheckoutBuyNow');
     //Route thanh toán chuyển khoản
-   
 });
 
 
