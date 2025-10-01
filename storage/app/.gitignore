@@ -1,8 +1,8 @@
 *
 !app/
 !public/
-!public/ads/
-!public/ads/**
+!public/staticAds/
+!public/staticAds/**
 !public/recommendProduct/
 !public/recommendProduct/**
 !logo.png
