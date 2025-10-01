@@ -380,7 +380,7 @@ class OrderController extends Controller
         $orders = Order::with(['orderitems.product'])
                     ->where('UserID', auth()->user()->UserID)
                     ->orderBy('OrderDate', 'desc')
-                    ->get();
+                    ->paginate(4);
 
        return response()->json($orders);
     }
@@ -434,9 +434,9 @@ class OrderController extends Controller
     public function dashboard(){
         $orders = Order::with(['orderitems.product','payments','user'])
                             ->orderBy('OrderDate', 'desc')                
-                            ->get();
+                            ->paginate(25);
         
-        $orderitems = Orderitem::get();
+        $orderitems = Orderitem::first();
 
         return view('order.dashboard',['orders'=> $orders,'orderitems' => $orderitems]);
     }

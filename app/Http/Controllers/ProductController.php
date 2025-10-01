@@ -22,7 +22,7 @@ class ProductController extends Controller
     }
 
     public function dashboard(){
-        $products = Product::with(['category','brand'])->get();
+        $products = Product::with(['category','brand'])->paginate(25);
         $categories = Category::all();
         // dd($products);
         return view('product.dashboard', ['products' => $products, 'categories' => $categories]);
@@ -374,7 +374,7 @@ class ProductController extends Controller
             $query->orderBy('CreatedAt', 'desc');
         }
 
-        $products = $query->get();
+        $products = $query->paginate(25);
 
         return view('product.dashboard', ['products' => $products]);
     }

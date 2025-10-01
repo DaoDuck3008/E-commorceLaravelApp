@@ -83,14 +83,15 @@
 <script>
   // Gọi 5 order gần nhất bằng API
   function fetchOrders() {
-    fetch('{{ route('api.order.history') }}') 
+    fetch('/api/order/history') 
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
-        .then(orders => {
+        .then(data => {
+            const orders = data.data;
             renderOrders(orders);
         })
         .catch(error => {
@@ -113,6 +114,8 @@
                 Dữ liệu đơn hàng không hợp lệ
             </div>
         `;
+
+        console.log(orders);
         return;
     }
     
@@ -162,7 +165,7 @@
             <div class="order-item mb-3 p-3 border rounded">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div>
-                        <strong class="mb-2">Đơn hàng #0${243422408000131 + order.OrderID}</strong> - ${order.OrderDate}
+                        <strong class="mb-2">Đơn hàng #${ order.OrderID}</strong> - ${order.OrderDate}
                     </div>
                     <a href="/order/${order.OrderID}" class="btn btn-dark">Xem chi tiết</a>
                 </div>
