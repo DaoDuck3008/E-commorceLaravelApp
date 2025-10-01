@@ -216,7 +216,7 @@ class OrderController extends Controller
                 'PaymentDate' => now(),
                 'Amount' => $totalAmount,
                 'PaymentMethod' => $validated['paymentMethod'],
-                'STATUS' => 'Completed'
+                'STATUS' => 'Processing',
             ]);
 
             // Đánh dấu giỏ hàng đã hoàn thành
@@ -231,6 +231,11 @@ class OrderController extends Controller
             }
 
             DB::commit();
+
+            if($validated['paymentMethod'] === 'bankTransfer'){
+                $amount= $totalAmount;
+                return redirect()->route('payment.vnpay',['amount'=> $amount,'orderID' => $order->OrderID]);
+            }
 
             return redirect()->route('order.confirmation',$order->OrderID)->with('success','Đặt hàng thành công!');
 
@@ -323,7 +328,7 @@ class OrderController extends Controller
                 'PaymentDate' => now(),
                 'Amount' => $totalAmount,
                 'PaymentMethod' => $validated['paymentMethod'],
-                'STATUS' => 'Completed'
+                'STATUS' => 'Processing',
             ]);
 
             // Đánh dấu giỏ hàng đã hoàn thành
@@ -339,8 +344,12 @@ class OrderController extends Controller
 
             DB::commit();
 
-            return redirect()->route('order.confirmation',$order->OrderID)->with('success','Đặt hàng thành công!');
+            if($validated['paymentMethod'] === 'bankTransfer'){
+                $amount= $totalAmount;
+                return redirect()->route('payment.vnpay',['amount'=> $amount,'orderID' => $order->OrderID]);
+            }
 
+            return redirect()->route('order.confirmation',$order->OrderID)->with('success','Đặt hàng thành công!');
 
         }catch(Exception $e){
             DB::rollBack();
@@ -478,8 +487,13 @@ class OrderController extends Controller
             'STATUS' => $updatedSTATUS
         ]);
 
+        if($updatedSTATUS === 'Completed'){
+            Payment::where('OrderID',$order->OrderID)
+                        ->update([
+                            'STATUS' => 'Paid'
+                        ]);
+        }
         
-
         return redirect()->back()->with('success','Cập nhật trạng thái đơn hàng thành công');
     }
 

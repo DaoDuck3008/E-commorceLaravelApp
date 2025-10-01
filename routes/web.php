@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 
 # Public routes (Customer có thể vào)
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -53,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/buy_now',[OrderController::class,'buyNow'])->name('order.buyNow');
     Route::post('/checkout_buy_now', [OrderController::class, 'processCheckoutBuyNow'])->name('processCheckoutBuyNow');
     //Route thanh toán chuyển khoản
+    Route::get('/payment/vnPay',[PaymentController::class,'vnPay'])->name('payment.vnpay');
+    Route::get('/payment/vnpay/return',[PaymentController::class,'return'])->name('payment.vnpay.return');
 });
 
 
@@ -62,21 +65,21 @@ Route::middleware(['role:Admin'])->prefix('/admin')->group(function () {
 
     Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
     Route::resource('/products', ProductController::class);
-
+    // Quản lý danh mục
     Route::resource('/category', CategoryController::class)->except(['show']);
-
+    // Quản lý thương hiệu
     Route::get('/brand/search',[BrandController::class,'search'])->name('admin.brand.search');
     Route::resource('/brand', BrandController::class)->except(['show']);
     Route::get('/brands-by-category/{categoryID}', [BrandController::class,'getByCategory']);
-
+    //Quản lý người dùng
     Route::get('/user', [UserController::class, 'index'])->name('admin.user.index');
     Route::get('/user/search',[UserController::class,'search'])->name('admin.user.search');
     Route::get('/user/{UserID}/edit', [UserController::class,'edit'])->name('admin.user.edit');
     Route::put('/user/{UserID}',[UserController::class,'update'])->name('admin.user.update');
     Route::delete('/user/{UserID}',[UserController::class,'destroy'])->name('admin.user.destroy');
-
+    // Quản lý ưu đãi
     Route::resource('/promotion', App\Http\Controllers\PromotionController::class)->except(['show']);
-    // Dashboard order
+    // Quản lý đơn hàng
     Route::get('/order',[OrderController::class,'dashboard'])->name('admin.order.dashboard');
     Route::get('/order/{orderId}',[OrderController::class,'showAdmin'])->name('admin.order.detail');
     Route::put('/order/update/{orderId}',[OrderController::class,'updateSTATUS'])->name('admin.order.updateStatus');

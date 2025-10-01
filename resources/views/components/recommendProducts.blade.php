@@ -17,6 +17,7 @@
             .then(products => {
                 products.forEach(product => {
                     let html = `<a
+                    href="/products/${product.ProductID}""
                     class="card p-3 rounded shadow position-relative mx-2"
                     style="
                         background: linear-gradient(180deg, #fff, #ffeceb);

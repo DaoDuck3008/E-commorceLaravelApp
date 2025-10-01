@@ -439,9 +439,6 @@
                         THANH TOÁN
                     </button>
                 </div>
-                @if ($buyNow === true)
-                    <p>haskjdashkd</p>
-                @endif
             </div>
         </div>
     </div>
