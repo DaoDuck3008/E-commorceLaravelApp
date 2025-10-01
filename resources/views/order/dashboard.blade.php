@@ -66,7 +66,7 @@
         <div class="col-md-12">
         <div class="card-custom">
             <div class="d-flex my-2 ">
-              <h4 class="me-auto text-danger">Bảng đơn hàng</h4>
+              <h4 class="me-auto text-danger"><strong><i class="fa-solid fa-truck-moving me-2"></i> Bảng đơn hàng</strong></h4>
             </div>
             <div class="table-responsive rounded" style="max-height: 500px;">
                 <table class="table table-hover align-middle" style="min-width: 1200px;">

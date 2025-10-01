@@ -90,6 +90,7 @@
       
       <div>
         @auth
+        <a class="btn btn-dark m-1 " href="{{ route('home') }}" style="color: white"><i class="fa-solid fa-house me-1"></i>Về trang chủ</a>
         <a
           aria-current="page"
           class="btn btn-dark m-1"

@@ -4,7 +4,6 @@
     <div style="height:100vh">
         {{-- Bộ lọc --}}
         <div class="container my-3">
-
             <!-- Chọn theo tiêu chí -->
             <h6 class="mb-2 fw-bold">Chọn theo tiêu chí</h6>
             <div class="d-flex flex-wrap gap-2 mb-3">
@@ -13,6 +12,12 @@
                 <button class="btn btn-outline-danger" id="filter" data-bs-toggle="modal" data-bs-target="#filterModal">
                     <i class="fa-solid fa-filter me-1"></i> Bộ lọc
                 </button>
+
+                @if (request('sort') || request('category') || request('min_price') || request('max_price') || request('input'))
+                    <a class="btn btn-danger" href="{{  route('products.searchCustomer')}}">
+                        <i class="fa-solid fa-x me-1"></i> Xóa bộ lọc
+                    </a>
+                @endif
 
 
                 <!-- Modal Filter -->
@@ -61,11 +66,11 @@
                             <div class="col-md-6">
                                 <label for="sort_by" class="form-label">Sắp xếp theo</label>
                                 <select name="sort_by" id="sort_by" class="form-select">
-                                <option value="">-- Mặc định --</option>
-                                <option value="newest" {{ request('sort_by') == 'newest' ? 'selected' : '' }}>Mới nhất</option>
-                                <option value="oldest" {{ request('sort_by') == 'oldest' ? 'selected' : '' }}>Cũ nhất</option>
-                                <option value="price_asc" {{ request('sort_by') == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
-                                <option value="price_desc" {{ request('sort_by') == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
+                                    <option value="">-- Mặc định --</option>
+                                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất</option>
+                                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Cũ nhất</option>
+                                    <option value="price_asc" {{ request('sort') == 'low-to-high' ? 'selected' : '' }}>Giá tăng dần</option>
+                                    <option value="price_desc" {{ request('sort') == 'high-to-low' ? 'selected' : '' }}>Giá giảm dần</option>
                                 </select>
                             </div>
             
@@ -88,16 +93,16 @@
             <button class="btn btn-outline-primary active">
                 <i class="fa-solid fa-star me-1"></i> Phổ biến
             </button>
-            <button class="btn btn-outline-secondary">
+            <button class="btn btn-outline-secondary {{ request('sort') == 'newest' ? "active" : "" }}" data-sort="newest">
                 <i class="fa-solid fa-bolt me-1"></i> Mới nhất
             </button>
-            <button class="btn btn-outline-secondary">
+            <button class="btn btn-outline-secondary {{ request('sort') == 'oldest' ? "active" : "" }}" data-sort="oldest">
                 <i class="fa-solid fa-bolt me-1"></i> Cũ nhất
             </button>
-            <button class="btn btn-outline-secondary">
+            <button class="btn btn-outline-secondary {{ request('sort') == 'low-to-high' ? "active" : "" }}" data-sort="low-to-high">
                 <i class="fa-solid fa-arrow-up-wide-short me-1"></i> Giá Thấp - Cao
             </button>
-            <button class="btn btn-outline-secondary">
+            <button class="btn btn-outline-secondary {{ request('sort') == 'high-to-low' ? "active" : "" }}" data-sort="high-to-low">
                 <i class="fa-solid fa-arrow-down-wide-short me-1"></i> Giá Cao - Thấp
             </button>
             </div>
@@ -106,47 +111,49 @@
 
         <!-- Các sản phẩm -->
         <div
-        class="d-flex flex-wrap mt-3  justify-content-left"
+        class="d-flex  mt-3  justify-content-center"
         >
-            @foreach ( $products as $product )
-            <a
-                class="card p-3 rounded shadow position-relative mx-2 mt-3 btn"
-                href="/products/{{ $product->ProductID }}"
-                style="
-                background: linear-gradient(180deg, #fff, #ffeceb);
-                width: 220px;
-                min-width: 220px;
-                "
-            >
-                <span class="badge bg-danger position-absolute top-0 start-0 m-2"
-                >Giảm 3%</span
-                >
-
-                <img
-                src="{{ $product->ImageURL }}"
-                class="card-img-top mt-4"
-                alt="CPU AMD Ryzen 5 5600"
-                />
-
-                <div class="card-body p-0 mt-2">
-                <h6 class="card-title mb-2">
-                    {{ $product->ProductName }}
-                </h6>
-                <div class="d-flex align-items-baseline gap-2">
-                    <span class="text-danger fw-bold fs-6">{{ $product->Price }}đ</span>
-                    <small class="text-muted text-decoration-line-through"
-                    >34.990.000đ</small
+            <div class="d-flex flex-wrap justify-content-left">
+                @foreach ( $products as $product )
+                    <a
+                        class="card p-3 rounded shadow position-relative mx-2 mt-3 btn"
+                        href="/products/{{ $product->ProductID }}"
+                        style="
+                        background: linear-gradient(180deg, #fff, #ffeceb);
+                        width: 220px;
+                        min-width: 220px;
+                        "
                     >
-                </div>
-                <div class="bg-light text-secondary small px-2 py-1 rounded mt-1">
-                    Giá S-Student 3.705.000đ
-                </div>
-                <div class="d-flex flex-row-reverse mt-2">
-                    <btn class="btn btn-primary">♡ Yêu thích</btn>
-                </div>
-                </div>
-            </a>
-            @endforeach
+                        <span class="badge bg-danger position-absolute top-0 start-0 m-2"
+                        >Giảm 3%</span
+                        >
+
+                        <img
+                        src="{{ $product->ImageURL }}"
+                        class="card-img-top mt-4"
+                        alt="CPU AMD Ryzen 5 5600"
+                        />
+
+                        <div class="card-body p-0 mt-2">
+                        <h6 class="card-title mb-2">
+                            {{ $product->ProductName }}
+                        </h6>
+                        <div class="d-flex align-items-baseline gap-2">
+                            <span class="text-danger fw-bold fs-6">{{ number_format($product->Price, 0, ',','.') }}đ</span>
+                            <small class="text-muted text-decoration-line-through"
+                            >{{ number_format($product->Price + 1000000, 0, ',','.') }}đ</small
+                            >
+                        </div>
+                        <div class="bg-light text-secondary small px-2 py-1 rounded mt-1">
+                            Giá S-Student {{ number_format($product->Price - 1000000, 0, ',','.') }}đ
+                        </div>
+                        <div class="d-flex flex-row-reverse mt-2">
+                            <btn class="btn btn-primary">♡ Yêu thích</btn>
+                        </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
         </div>
 
          {{-- pagination --}}
@@ -233,6 +240,34 @@
                     })
                     .catch(err => console.error(err));
             }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lấy tất cả các nút sort
+            const sortButtons = document.querySelectorAll('button[data-sort]');
+            
+            // Function để cập nhật URL với sort parameter
+            function updateSortParam(sortValue) {
+                const url = new URL(window.location.href);
+                console.log(">> current url: " ,url);
+                // Set sort parameter
+                url.searchParams.set('sort', sortValue);
+                
+                // Xóa page parameter khi sort (tránh page không hợp lệ)
+                url.searchParams.delete('page');
+                
+                // Chuyển hướng đến URL mới
+                window.location.href = url.toString();
+            }
+            
+            // Thêm event listener cho từng nút
+            sortButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const sortValue = this.getAttribute('data-sort');
+                    updateSortParam(sortValue);
+                });
+            });
         });
     </script>
 

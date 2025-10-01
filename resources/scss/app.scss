@@ -215,3 +215,10 @@ a.card:hover {
     padding: 0 460px;
     max-width: none;
 }
+
+#megaMenuContainer a:hover {
+    text-decoration: underline;
+    color: red;
+    font-weight: 600;
+    cursor: pointer;
+}

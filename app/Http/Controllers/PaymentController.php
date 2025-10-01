@@ -111,7 +111,7 @@ class PaymentController extends Controller
     
                 if ($order) {
                     // Cập nhật trạng thái đơn hàng thành đã thanh toán
-                    Payment::where('OrderID', $order->orderID)
+                    Payment::where('OrderID', $order->OrderID)
                                     ->update([
                                         'STATUS' => 'Paid',
                                     ]);

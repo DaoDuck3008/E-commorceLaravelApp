@@ -7,7 +7,7 @@
         <div class="d-flex flex-column flex-md-row">
           <h4 class="me-auto">CÁC SẢN PHẨM ĐIỆN THOẠI</h4>
           <div class="d-flex flex-nowrap overflow-auto gap-2">
-            <button class="btn btn-dark">Xem thêm</button>
+            <a href="{{ route('products.searchCustomer') }}" class="btn btn-dark">Xem thêm</a>
             
           </div>
         </div>

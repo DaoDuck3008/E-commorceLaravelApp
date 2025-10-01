@@ -21,6 +21,8 @@
     @vite('resources/scss/app.scss')
     
     @vite('resources/scss/product.scss')
+
+    @yield('style')
 </head>
 <body>
     {{-- Header --}}
@@ -47,7 +49,7 @@
 
       <!-- Quảng cáo dài  -->
       <div class="long-ads mt-3">
-        <img src="{{ asset('storage/ads/longAds.gif') }}" />
+        <img src="{{ asset('storage/staticAds/longAds.gif') }}" />
       </div>
 
       {{-- Gợi ý sản phẩm --}}
@@ -163,5 +165,7 @@
       });
     </script>
 
-    </body>
+    @yield('script')
+
+  </body>
 </html>

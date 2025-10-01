@@ -3,7 +3,5 @@
 !public/
 !public/staticAds/
 !public/staticAds/**
-!public/recommendProduct/
-!public/recommendProduct/**
 !logo.png
 !.gitignore
