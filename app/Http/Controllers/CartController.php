@@ -13,6 +13,8 @@ use Exception;
 class CartController extends Controller
 {
     public function index(){
+        //auth()->user() - người dùng hiện tại
+        // auth()->user()->UserID - lấy ID người dùng hiện tại
         $cart = Cart::where('UserID', auth()->user()->UserID)
                         ->where('Completed', false)
                         ->first();

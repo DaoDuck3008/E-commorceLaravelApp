@@ -87,7 +87,6 @@
             </form>
           </div>
 
-
           {{-- Giỏ hàng và thông tin người dùng --}}
         <ul class="navbar-nav me-3 mb-2 mb-lg-0 gap-2 col-auto">
           @auth
@@ -95,7 +94,7 @@
             <a
               class="nav-link active"
               aria-current="page"
-              href="{{ route('cart.index') }}"
+              href="{{ route('cart.index') }}" 
               style="color: white"
               ><i class="fa-solid fa-cart-shopping me-1"></i>Giỏ hàng</a
             >

@@ -107,7 +107,7 @@ class PaymentController extends Controller
             // Kiểm tra trạng thái giao dịch từ VNPay
             if ($request->vnp_ResponseCode == '00') {
                 $orderId = $request->vnp_TxnRef; 
-                $order = Order::find($orderId);
+                $order = Order::where('OrderID', $orderId)->first();
     
                 if ($order) {
                     // Cập nhật trạng thái đơn hàng thành đã thanh toán

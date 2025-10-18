@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div style="height:100vh">
+    <div style="min-height:100vh">
         {{-- Bộ lọc --}}
         <div class="container my-3">
             <!-- Chọn theo tiêu chí -->

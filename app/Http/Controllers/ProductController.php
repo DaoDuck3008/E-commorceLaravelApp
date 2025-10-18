@@ -42,10 +42,7 @@ class ProductController extends Controller
     }
 
     public function store (StoreProductRequest $request){
-        //Validate ở trong file StoreProductRequest
         $request->validated();
-
-        // dd($request);
 
         DB::beginTransaction();
 
@@ -124,7 +121,7 @@ class ProductController extends Controller
 
     public function edit($id){
         $product = Product::with(['productImgs', 'productSpecifications', 'productVersions', 'productColors','category','brand'])
-                  ->find($id);
+                  ->find($id); // ProductID = $id /// where('ProductID',$id)
         $categories = Category::all();
 
         // dd($product);
@@ -132,7 +129,6 @@ class ProductController extends Controller
     }
 
     public function update(StoreProductRequest $request, $id){
-        // dd($request);
         //Validate ở trong file StoreProductRequest
         $request->validated();
 
@@ -302,6 +298,7 @@ class ProductController extends Controller
     public function destroy($id){
         DB::beginTransaction();
 
+
         try{
             $product = Product::findOrFail($id);
 
@@ -311,7 +308,7 @@ class ProductController extends Controller
             }
 
             // Xóa các ảnh sản phẩm và file tương ứng
-            $productImages = Productimg::where('ProductID', $product->ProductID)->get();
+            $productImages = Productimg::where('ProductID', $product->ProductID)->get(); 
             foreach($productImages as $image){
                 if($image->ImgURL){
                     $imagePath = str_replace('/storage/', '', $image->ImgURL);
@@ -343,15 +340,11 @@ class ProductController extends Controller
 
     public function search(Request $request){
         $query = Product::with(['category','brand']);
+
+        // Tìm kiếm theo tên nhập vào 
         if($request->has('input')&& !empty($request->input)){
             $keyword = $request->input;
             $query->where('ProductName','like',"%{$keyword}%");
-                // ->orWhereHas('category', function($q) use ($keyword) {
-                //     $q->where('CategoryName','like',"%{$keyword}%");
-                // })
-                // ->orWhereHas('brand', function($q) use ($keyword) {
-                //     $q->where('BrandName','like',"%{$keyword}%");
-                // });
         }
 
         if($request->has('category') && !empty($request->category)){
