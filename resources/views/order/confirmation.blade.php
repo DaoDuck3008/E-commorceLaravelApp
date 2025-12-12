@@ -158,7 +158,7 @@
                         <h6 class="fw-bold mb-3">SẢN PHẨM ĐÃ ĐẶT</h6>
                         @foreach ($order->orderitems as $item)
                         <div class="d-flex align-items-center border-bottom pb-3 mb-3">
-                            <img src="{{ $item->product->ImageURL }}" 
+                            <img src="{{ $item->color->ImgURL ?? $item->product->ImageURL }}" 
                                  alt="{{ $item->product->ProductName }}"
                                  class="product-image-confirm me-3">
                             <div class="flex-grow-1">

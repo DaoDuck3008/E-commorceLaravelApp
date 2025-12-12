@@ -186,7 +186,7 @@
                 @endphp
                     <div class="d-flex align-items-center my-2">
                         <img
-                            src="{{ $item->product->ImageURL }}"
+                            src="{{ $item->color->ImgURL ?? $item->product->ImageURL }}"
                             alt="{{ $item->product->ProductName }}"
                             class="product-image-small me-3"
                         />

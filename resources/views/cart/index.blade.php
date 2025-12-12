@@ -40,7 +40,7 @@
                     <label class="form-check-label" for="product-{{ $index }}"></label>
                 </div>
 
-                <img src="{{ $item->product->ImageURL }}" alt="{{ $item->product->ProductName }}" class="product-image me-3" />
+                <img src="{{ $item->color->ImgURL ?? $item->product->ImageURL }}" alt="{{ $item->product->ProductName }}" class="product-image me-3" />
 
                 <div class="flex-grow-1">
                     <div class="d-flex justify-content-between">

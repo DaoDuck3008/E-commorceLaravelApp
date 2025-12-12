@@ -71,6 +71,10 @@
         >
           <!-- Main Carousel -->
           <div class="carousel-inner text-center ads-container-product carousel slide" id="productCarousel">
+            {{-- Ảnh sản phẩm chính --}}
+            @php
+              $totalImg = $product->productImgs->count() ?? 0;
+            @endphp
             @foreach($product->productImgs as $index => $img)
             <div class="carousel-item {{ $index == 0 ? "active" : "" }} ">
               <img
@@ -78,6 +82,17 @@
                 alt="ảnh sản phẩm {{ $index+1 }}"
               />
             </div>
+            @endforeach
+
+            {{-- Ảnh màu sản phẩm --}}
+            @foreach ($product->productcolors as $index => $color)
+              <div 
+                class="carousel-item" 
+                data-color="{{ $color->ColorID }}" 
+                data-start-index="{{ $index }}" 
+              >
+                <img src="{{ $color->ImgURL }}" alt="{{ $color->Color }}">
+              </div>
             @endforeach
           </div>
 
@@ -111,6 +126,17 @@
             class="thumb {{ $index == 0 ? "active" : "" }}"
             data-bs-target="#productCarousel"
             data-bs-slide-to="{{ $index }}"
+          />
+          @endforeach
+
+          @foreach ($product->productcolors as $index => $img)
+            <img
+            src="{{ $img->ImgURL }}"
+            width="80"
+            height="80"
+            class="thumb {{ $index == 0 ? "active" : "" }}"
+            data-bs-target="#productCarousel"
+            data-bs-slide-to="{{ $index + $totalImg}}"
           />
           @endforeach
         </div>
@@ -189,6 +215,7 @@
               class="btn-check color-radio"
               name="colorID"
               id="color{{ $index }}"
+              data-start-index="{{ $index + $totalImg }}"
               value="{{ $color->ColorID }}"
               autocomplete="off"
               {{ $index == 0 ? "checked" : "" }}
@@ -635,6 +662,7 @@
 <script>
   const carouselElement = document.querySelector("#productCarousel");
   const thumbnails = document.querySelectorAll(".thumb");
+  const items = document.querySelectorAll('.carousel-item');
 
   carouselElement.addEventListener("slid.bs.carousel", (e) => {
     // Xóa active cũ
@@ -642,6 +670,24 @@
     // Thêm active mới
     thumbnails[e.to].classList.add("active");
   });
+
+  // Hiển thị ảnh khi chọn color
+  document.querySelectorAll('.color-radio').forEach(radio => {
+    radio.addEventListener('change',function() {
+      const startIndex = parseInt(this.dataset.startIndex);
+      if (!isNaN(startIndex)) {
+        goToSlide(startIndex);
+      }
+    });
+  });
+
+  function goToSlide(index){
+    // Gỡ active hiện tại
+    items.forEach(item => item.classList.remove('active'));
+    
+    // Gán active cho ảnh được chọn
+    if (items[index]) items[index].classList.add('active');
+  }
 
   // Hàm format giá tiền
   function formatPrice(price) {
@@ -700,5 +746,7 @@
     // Gửi form
     this.submit();
   });
+
+
 </script>
 @endsection

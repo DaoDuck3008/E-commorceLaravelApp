@@ -27,7 +27,7 @@ class Orderitem extends Model
     /**
      * @var array
      */
-    protected $fillable = ['OrderID', 'ProductID', 'Quantity', 'Price'];
+    protected $fillable = ['OrderID', 'ProductID', 'Quantity', 'Price','VersionID','ColorID'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -47,11 +47,11 @@ class Orderitem extends Model
 
     public function version()
     {
-        return $this->belongsTo(ProductVersion::class, 'VersionID', 'VersionID');
+        return $this->belongsTo('App\Models\Productversion', 'VersionID', 'VersionID');
     }
 
     public function color()
     {
-        return $this->belongsTo(ProductColor::class, 'ColorID', 'ColorID');
+        return $this->belongsTo('App\Models\Productcolor', 'ColorID', 'ColorID');
     }
 }

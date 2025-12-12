@@ -360,7 +360,7 @@ class OrderController extends Controller
     public function confirmation($orderId){
         $order = Order::where('OrderID', $orderId)
                         ->where('UserID', auth()->user()->UserID)
-                        ->with(['orderitems.product','payments'])
+                        ->with(['orderitems.product','orderitems.color','orderitems.version','payments'])
                         ->first();
 
 

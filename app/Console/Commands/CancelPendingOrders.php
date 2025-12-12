@@ -43,10 +43,15 @@ class CancelPendingOrders extends Command
             $order->CancelReason = 'Đơn hàng không được cửa hàng duyệt trong vòng 8 giờ sau khi đặt hàng';
             $order->save();
             $count++;
+
+            Log::info("Đơn hàng #{$order->OrderID} đã tự động hủy do quá 8 giờ không được xử lý!");
         }
 
-        Log::info("Đơn hàng #{$order->OrderID} đã tự động hủy do quá 8 giờ không được xử lý!");
+
 
         $this->info("Đã hủy {$count} đơn hàng pending quá 8 giờ");
     }
 }
+
+
+
